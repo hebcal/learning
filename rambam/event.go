@@ -68,7 +68,7 @@ func NewDailyRambam1Event(hd hdate.HDate, reading Reading) event.CalEvent {
 
 func (ev rambam1Event) GetDate() hdate.HDate         { return ev.Date }
 func (ev rambam1Event) Render(locale string) string  { return renderReading(ev.Reading, locale) }
-func (ev rambam1Event) GetFlags() event.HolidayFlags { return 0 }
+func (ev rambam1Event) GetFlags() event.HolidayFlags { return event.DAILY_LEARNING }
 func (ev rambam1Event) GetEmoji() string             { return "" }
 func (ev rambam1Event) Basename() string             { return ev.Reading.String() }
 
@@ -87,7 +87,7 @@ func NewDailyRambam3Event(hd hdate.HDate, readings []Reading) event.CalEvent {
 }
 
 func (ev rambam3Event) GetDate() hdate.HDate         { return ev.Date }
-func (ev rambam3Event) GetFlags() event.HolidayFlags { return 0 }
+func (ev rambam3Event) GetFlags() event.HolidayFlags { return event.DAILY_LEARNING }
 func (ev rambam3Event) GetEmoji() string             { return "" }
 
 func (ev rambam3Event) Render(locale string) string {

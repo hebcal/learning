@@ -52,9 +52,7 @@ func (ev nine29Event) Render(locale string) string {
 }
 
 func (ev nine29Event) GetFlags() event.HolidayFlags {
-	// No dedicated bitmask flag; 929 events are reached via the
-	// dailylearning registry rather than CalOptions mask filtering.
-	return 0
+	return event.DAILY_LEARNING
 }
 
 func (ev nine29Event) GetEmoji() string {

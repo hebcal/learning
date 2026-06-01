@@ -13,6 +13,7 @@ import (
 
 	"github.com/hebcal/hdate"
 	"github.com/hebcal/hebcal-go/dailylearning"
+	"github.com/hebcal/hebcal-go/event"
 	"github.com/hebcal/hebcal-go/hebcal"
 	"github.com/stretchr/testify/assert"
 
@@ -31,6 +32,7 @@ func TestRegistry(t *testing.T) {
 
 	ev := dailylearning.Lookup("929", hdate.FromGregorian(2014, time.December, 21), false)
 	assert.Equal("Genesis 1 (1)", ev.Render("en"))
+	assert.Equal(event.DAILY_LEARNING, ev.GetFlags())
 
 	ev = dailylearning.Lookup("rambam1", hdate.FromGregorian(1987, time.February, 1), false)
 	assert.Equal("Kings and Wars 4", ev.Render("en"))
