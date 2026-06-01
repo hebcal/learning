@@ -159,6 +159,31 @@ func TestHebrewCalendarSchottenstein(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
+func TestDailyLearningOption(t *testing.T) {
+	// The generic CalOptions.DailyLearning []string surfaces any registered
+	// schedule by name through HebrewCalendar.
+	checkEvents(t, "en", &hebcal.CalOptions{
+		Start:         hdate.FromGregorian(2014, time.December, 21),
+		End:           hdate.FromGregorian(2014, time.December, 21),
+		NoHolidays:    true,
+		DailyLearning: []string{"929"},
+	}, []string{"2014-12-21 Genesis 1 (1)"})
+
+	checkEvents(t, "en", &hebcal.CalOptions{
+		Start:         hdate.FromGregorian(1987, time.February, 1),
+		End:           hdate.FromGregorian(1987, time.February, 1),
+		NoHolidays:    true,
+		DailyLearning: []string{"rambam1"},
+	}, []string{"1987-02-01 Kings and Wars 4"})
+
+	checkEvents(t, "en", &hebcal.CalOptions{
+		Start:         hdate.FromGregorian(2020, time.July, 9),
+		End:           hdate.FromGregorian(2020, time.July, 9),
+		NoHolidays:    true,
+		DailyLearning: []string{"rambam3"},
+	}, []string{"2020-07-09 Kings and Wars 10-12"})
+}
+
 func TestNachYomi(t *testing.T) {
 	opts := hebcal.CalOptions{
 		Start:      hdate.FromGregorian(2022, time.January, 20),
