@@ -20,6 +20,7 @@ import (
 	_ "github.com/hebcal/learning/mishnayomi"
 	_ "github.com/hebcal/learning/nachyomi"
 	_ "github.com/hebcal/learning/nine29"
+	_ "github.com/hebcal/learning/perekyomi"
 	_ "github.com/hebcal/learning/rambam"
 	_ "github.com/hebcal/learning/yerushalmi"
 )

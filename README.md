@@ -29,6 +29,8 @@ mirrors the relationship between `@hebcal/core` and `@hebcal/learning`:
     and 3-chapters-a-day cycles.
   - **dafweekly** — Daf-a-Week, the same page of the Babylonian Talmud
     studied for an entire week (~52-year cycle).
+  - **perekyomi** — Perek Yomi, one chapter of the Mishnah per day
+    (~17-month cycle).
 
 ## Usage
 
@@ -80,6 +82,7 @@ The schedules register the following case-insensitive names with the
   - `rambam3`
   - `dafWeekly`
   - `dafWeeklySunday`
+  - `perekYomi`
 
 ## Roadmap
 
@@ -87,7 +90,7 @@ The goal is to eventually port all of the daily learning schedules from
 the TypeScript [@hebcal/learning](https://github.com/hebcal/hebcal-learning)
 package. Still to port: Daily Psalms, Arukh HaShulchan Yomi, Sefer
 HaMitzvot, Chofetz Chaim, Shemirat HaLashon, Pirkei Avot, Tanakh Yomi,
-Perek Yomi, Kitzur Shulchan Aruch, Dirshu Amud Yomi, etc.
+Kitzur Shulchan Aruch, Dirshu Amud Yomi, Arukh HaShulchan Yomi, etc.
 
 ## License
 
