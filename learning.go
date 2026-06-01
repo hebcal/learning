@@ -15,6 +15,7 @@
 package learning
 
 import (
+	_ "github.com/hebcal/learning/dafweekly"
 	_ "github.com/hebcal/learning/dafyomi"
 	_ "github.com/hebcal/learning/mishnayomi"
 	_ "github.com/hebcal/learning/nachyomi"

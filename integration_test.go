@@ -26,7 +26,7 @@ import (
 func TestRegistry(t *testing.T) {
 	assert := assert.New(t)
 	assert.Equal(
-		[]string{"929", "dafyomi", "mishnayomi", "nachyomi", "rambam1", "rambam3", "yerushalmi-schottenstein", "yerushalmi-vilna"},
+		[]string{"929", "dafweekly", "dafweeklysunday", "dafyomi", "mishnayomi", "nachyomi", "rambam1", "rambam3", "yerushalmi-schottenstein", "yerushalmi-vilna"},
 		dailylearning.GetCalendars(),
 	)
 

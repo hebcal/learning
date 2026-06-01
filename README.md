@@ -25,6 +25,8 @@ mirrors the relationship between `@hebcal/core` and `@hebcal/learning`:
     Bible, Sun–Thu, covering all 929 chapters in ~3.5 years.
   - **rambam** — Daily Rambam (Mishneh Torah), in both the 1-chapter-a-day
     and 3-chapters-a-day cycles.
+  - **dafweekly** — Daf-a-Week, the same page of the Babylonian Talmud
+    studied for an entire week (~52-year cycle).
 
 ## Usage
 
@@ -74,14 +76,16 @@ The schedules register the following case-insensitive names with the
   - `929`
   - `rambam1`
   - `rambam3`
+  - `dafWeekly`
+  - `dafWeeklySunday`
 
 ## Roadmap
 
 The goal is to eventually port all of the daily learning schedules from
 the TypeScript [@hebcal/learning](https://github.com/hebcal/hebcal-learning)
 package. Still to port: Daily Psalms, Arukh HaShulchan Yomi, Sefer
-HaMitzvot, Chofetz Chaim, Shemirat HaLashon, Pirkei Avot, Daf-a-Week,
-Tanakh Yomi, Perek Yomi, Kitzur Shulchan Aruch, Dirshu Amud Yomi, etc.
+HaMitzvot, Chofetz Chaim, Shemirat HaLashon, Pirkei Avot, Tanakh Yomi,
+Perek Yomi, Kitzur Shulchan Aruch, Dirshu Amud Yomi, etc.
 
 ## License
 
