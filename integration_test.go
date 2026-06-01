@@ -12,11 +12,35 @@ import (
 	"time"
 
 	"github.com/hebcal/hdate"
+	"github.com/hebcal/hebcal-go/dailylearning"
 	"github.com/hebcal/hebcal-go/hebcal"
 	"github.com/stretchr/testify/assert"
 
 	_ "github.com/hebcal/learning"
 )
+
+// TestRegistry verifies that importing the learning package registers
+// every schedule with the dailylearning registry under the expected
+// (case-insensitive) names.
+func TestRegistry(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal(
+		[]string{"929", "dafyomi", "mishnayomi", "nachyomi", "rambam1", "rambam3", "yerushalmi-schottenstein", "yerushalmi-vilna"},
+		dailylearning.GetCalendars(),
+	)
+
+	ev := dailylearning.Lookup("929", hdate.FromGregorian(2014, time.December, 21), false)
+	assert.Equal("Genesis 1 (1)", ev.Render("en"))
+
+	ev = dailylearning.Lookup("rambam1", hdate.FromGregorian(1987, time.February, 1), false)
+	assert.Equal("Kings and Wars 4", ev.Render("en"))
+
+	ev = dailylearning.Lookup("rambam3", hdate.FromGregorian(2020, time.July, 9), false)
+	assert.Equal("Kings and Wars 10-12", ev.Render("en"))
+
+	// Case-insensitive lookups also work.
+	assert.NotNil(dailylearning.Lookup("Rambam1", hdate.FromGregorian(1987, time.February, 1), false))
+}
 
 func hd2iso(hd hdate.HDate) string {
 	year, month, day := hd.Greg()
