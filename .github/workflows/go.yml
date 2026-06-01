@@ -14,19 +14,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Check out hebcal/learning
-      uses: actions/checkout@v4
-      with:
-        path: learning
-
-    # The go.mod replace directive points at ../hebcal-go, so check out
-    # hebcal-go as a sibling directory until the dailylearning package is
-    # available in a tagged hebcal-go release.
-    - name: Check out hebcal/hebcal-go
-      uses: actions/checkout@v4
-      with:
-        repository: hebcal/hebcal-go
-        path: hebcal-go
+    - uses: actions/checkout@v4
 
     - name: Set up Go
       uses: actions/setup-go@v5
@@ -34,9 +22,7 @@ jobs:
         go-version: 1.17
 
     - name: Build
-      working-directory: learning
       run: go build -v ./...
 
     - name: Test
-      working-directory: learning
       run: go test -v ./...

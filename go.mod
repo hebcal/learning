@@ -2,13 +2,11 @@ module github.com/hebcal/learning
 
 go 1.17
 
-replace github.com/hebcal/hebcal-go => ../hebcal-go
-
 require (
 	github.com/hebcal/gematriya v1.0.1
 	github.com/hebcal/greg v1.0.2
 	github.com/hebcal/hdate v1.2.3
-	github.com/hebcal/hebcal-go v0.0.0-00010101000000-000000000000
+	github.com/hebcal/hebcal-go v0.12.0
 	github.com/stretchr/testify v1.11.1
 )
 
