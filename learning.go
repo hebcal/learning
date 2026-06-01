@@ -21,6 +21,7 @@ import (
 	_ "github.com/hebcal/learning/nachyomi"
 	_ "github.com/hebcal/learning/nine29"
 	_ "github.com/hebcal/learning/perekyomi"
+	_ "github.com/hebcal/learning/pirkeiavot"
 	_ "github.com/hebcal/learning/psalms"
 	_ "github.com/hebcal/learning/rambam"
 	_ "github.com/hebcal/learning/yerushalmi"
