@@ -39,10 +39,9 @@ import (
 )
 
 opts := &hebcal.CalOptions{
-	Start:    hdate.New(5783, hdate.Cheshvan, 18),
-	End:      hdate.New(5783, hdate.Cheshvan, 23),
-	DafYomi:  true,
-	NachYomi: true,
+	Start:         hdate.New(5783, hdate.Cheshvan, 18),
+	End:           hdate.New(5783, hdate.Cheshvan, 23),
+	DailyLearning: []string{"dafYomi", "rambam3"},
 }
 events, err := hebcal.HebrewCalendar(opts)
 ```
