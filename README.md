@@ -31,6 +31,8 @@ mirrors the relationship between `@hebcal/core` and `@hebcal/learning`:
     studied for an entire week (~52-year cycle).
   - **perekyomi** — Perek Yomi, one chapter of the Mishnah per day
     (~17-month cycle).
+  - **psalms** — Daily Psalms (Tehillim) in the traditional 30-day cycle,
+    completing the book of Psalms each Hebrew month.
 
 ## Usage
 
@@ -83,14 +85,15 @@ The schedules register the following case-insensitive names with the
   - `dafWeekly`
   - `dafWeeklySunday`
   - `perekYomi`
+  - `psalms`
 
 ## Roadmap
 
 The goal is to eventually port all of the daily learning schedules from
 the TypeScript [@hebcal/learning](https://github.com/hebcal/hebcal-learning)
-package. Still to port: Daily Psalms, Arukh HaShulchan Yomi, Sefer
-HaMitzvot, Chofetz Chaim, Shemirat HaLashon, Pirkei Avot, Tanakh Yomi,
-Kitzur Shulchan Aruch, Dirshu Amud Yomi, Arukh HaShulchan Yomi, etc.
+package. Still to port: Arukh HaShulchan Yomi, Sefer HaMitzvot, Chofetz
+Chaim, Shemirat HaLashon, Pirkei Avot, Tanakh Yomi, Kitzur Shulchan
+Aruch, Dirshu Amud Yomi, etc.
 
 ## License
 
