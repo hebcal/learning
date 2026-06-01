@@ -35,6 +35,8 @@ mirrors the relationship between `@hebcal/core` and `@hebcal/learning`:
     completing the book of Psalms each Hebrew month.
   - **pirkeiavot** — Pirkei Avot ("Ethics of the Fathers"), one chapter on
     each Shabbat of the summer between Pesach and Rosh Hashana.
+  - **tanakhyomi** — Tanakh Yomi, completing the Tanakh annually by the
+    Masoretic division into sedarim (skips Shabbat and major festivals).
 
 ## Usage
 
@@ -89,14 +91,14 @@ The schedules register the following case-insensitive names with the
   - `perekYomi`
   - `psalms`
   - `pirkeiAvotSummer`
+  - `tanakhYomi`
 
 ## Roadmap
 
 The goal is to eventually port all of the daily learning schedules from
 the TypeScript [@hebcal/learning](https://github.com/hebcal/hebcal-learning)
 package. Still to port: Arukh HaShulchan Yomi, Sefer HaMitzvot, Chofetz
-Chaim, Shemirat HaLashon, Tanakh Yomi, Kitzur Shulchan Aruch, Dirshu
-Amud Yomi, etc.
+Chaim, Shemirat HaLashon, Kitzur Shulchan Aruch, Dirshu Amud Yomi, etc.
 
 ## License
 
