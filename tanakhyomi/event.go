@@ -20,9 +20,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hebcal/gematriya"
 	"github.com/hebcal/hdate"
 	"github.com/hebcal/hebcal-go/event"
+	"github.com/hebcal/learning/internal/hebrew"
 	"github.com/hebcal/locales"
 )
 
@@ -64,19 +64,13 @@ func (ev tanakhYomiEvent) Render(locale string) string {
 // gematriya; a split seder like "4.1" becomes gematriya(major) + minor.
 func sederHebrew(blatt string) string {
 	if n, err := strconv.Atoi(blatt); err == nil {
-		return gematriyaNN(n)
+		return hebrew.GematriyaNN(n)
 	}
 	parts := strings.SplitN(blatt, ".", 2)
 	if maj, err := strconv.Atoi(parts[0]); err == nil && len(parts) == 2 {
-		return gematriyaNN(maj) + parts[1]
+		return hebrew.GematriyaNN(maj) + parts[1]
 	}
 	return blatt
-}
-
-// gematriyaNN formats a number as Hebrew letters without the geresh /
-// gershayim punctuation marks.
-func gematriyaNN(n int) string {
-	return strings.NewReplacer("׳", "", "״", "").Replace(gematriya.Gematriya(n))
 }
 
 func (ev tanakhYomiEvent) GetFlags() event.HolidayFlags {

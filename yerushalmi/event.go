@@ -20,10 +20,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hebcal/gematriya"
 	"github.com/hebcal/hdate"
 	"github.com/hebcal/hebcal-go/event"
 	"github.com/hebcal/learning/dafyomi"
+	"github.com/hebcal/learning/internal/hebrew"
 	"github.com/hebcal/locales"
 )
 
@@ -47,7 +47,7 @@ func (ev yyomiEvent) Render(locale string) string {
 	name, _ := locales.LookupTranslation(ev.Daf.Name, locale)
 	locale = strings.ToLower(locale)
 	if locale == "he" || locale == "he-x-nonikud" {
-		return yerushalmiStr + " " + name + " דף " + gematriya.Gematriya(ev.Daf.Blatt)
+		return yerushalmiStr + " " + name + " דף " + hebrew.GematriyaNN(ev.Daf.Blatt)
 	}
 	return yerushalmiStr + " " + name + " " + strconv.Itoa(ev.Daf.Blatt)
 }

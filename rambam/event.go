@@ -20,9 +20,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hebcal/gematriya"
 	"github.com/hebcal/hdate"
 	"github.com/hebcal/hebcal-go/event"
+	"github.com/hebcal/learning/internal/hebrew"
 	"github.com/hebcal/locales"
 )
 
@@ -43,7 +43,7 @@ func renderReading(r Reading, locale string) string {
 // becomes gematriya; a range is left as-is.
 func perekHebrew(perek string) string {
 	if n, err := strconv.Atoi(perek); err == nil {
-		return gematriya.Gematriya(n)
+		return hebrew.GematriyaNN(n)
 	}
 	return perek
 }

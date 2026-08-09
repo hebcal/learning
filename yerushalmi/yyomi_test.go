@@ -1624,3 +1624,18 @@ func TestYerushalmiYomi2082(t *testing.T) {
 	assert.Equal(dafyomi.Daf{Name: "Berakhot", Blatt: 1},
 		yerushalmi.New(hdate.FromGregorian(2082, time.October, 6), yerushalmi.Vilna))
 }
+
+// TestRender pins the event rendering, in particular that Hebrew blatt
+// numbers carry no geresh / gershayim, matching @hebcal/learning.
+func TestRender(t *testing.T) {
+	assert := assert.New(t)
+	hd := hdate.FromRD(738473) // 14 November 2022
+	ev := yerushalmi.NewYerushalmiYomiEvent(hd, yerushalmi.New(hd, yerushalmi.Schottenstein))
+	assert.Equal("Yerushalmi Berakhot 1", ev.Render("en"))
+	assert.Equal("יְרוּשַׁלְמִי ברכות דף א", ev.Render("he"))
+
+	hd = hdate.FromRD(738500)
+	ev = yerushalmi.NewYerushalmiYomiEvent(hd, yerushalmi.New(hd, yerushalmi.Vilna))
+	assert.Equal("Yerushalmi Berakhot 28", ev.Render("en"))
+	assert.Equal("יְרוּשַׁלְמִי ברכות דף כח", ev.Render("he"))
+}

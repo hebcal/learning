@@ -34,7 +34,8 @@ func TestRambam1(t *testing.T) {
 	assert.Equal("Kings and Wars 4", ev.Render("en"))
 	assert.Equal("Kings and Wars 4", ev.Render("ashkenazi"))
 	assert.Equal("Kings and Wars 4", ev.Basename())
-	assert.Equal("הלכות מלכים ומלחמות פרק ד׳", ev.Render("he"))
+	// Hebrew chapter numbers carry no geresh / gershayim, matching @hebcal/learning
+	assert.Equal("הלכות מלכים ומלחמות פרק ד", ev.Render("he"))
 }
 
 func TestRambam1BeforeStart(t *testing.T) {
