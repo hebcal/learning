@@ -60,9 +60,23 @@ func TestPirkeiAvot5783Israel(t *testing.T) {
 }
 
 func TestPirkeiAvotNotShabbat(t *testing.T) {
-	// 24 Nisan 3759 is not a Pirkei Avot Shabbat.
-	_, ok := pirkeiavot.New(hdate.New(3759, hdate.Nisan, 24), true)
+	// A weekday is never a Pirkei Avot Shabbat.
+	_, ok := pirkeiavot.New(hdate.New(5784, hdate.Nisan, 24), true) // Thursday
 	assert.False(t, ok)
+}
+
+// In Hebrew year 3759 (~2000 BCE), 21 Nisan (7th day Pesach) is a
+// Wednesday, so 24 Nisan is the first Shabbat after Pesach and gets
+// chapter 1. The upstream @hebcal/learning test expects nil here, but
+// that stems from a bug in @hebcal/hdate's dayOnOrBefore, whose raw JS
+// `%` returns a day *after* the target for negative R.D. numbers (dates
+// before the common era). hebcal/hdate v1.4.0 fixed this by flooring the
+// modulo, so New now returns the correct reading. Modern (positive R.D.)
+// dates are unaffected by the fix.
+func TestPirkeiAvotNegativeRataDie(t *testing.T) {
+	r, ok := pirkeiavot.New(hdate.New(3759, hdate.Nisan, 24), true)
+	assert.True(t, ok)
+	assert.Equal(t, []int{1}, r)
 }
 
 func TestPirkeiAvotRender(t *testing.T) {
