@@ -72,6 +72,30 @@ daf, _ := dafyomi.New(hdate.FromGregorian(1995, time.December, 17))
 fmt.Println(daf) // Avodah Zarah 68
 ```
 
+## Event URLs
+
+Every learning event implements the `event.URLer` interface from
+`hebcal-go`, returning a canonical link to the day's reading. Use the
+`event.URL` helper (which returns `""` for events that carry no page):
+
+```go
+ev := dailylearning.Lookup("dafYomi", hdate.FromGregorian(2020, time.June, 18), false)
+fmt.Println(event.URL(ev)) // https://www.sefaria.org/Shabbat.104a?lang=bi
+```
+
+Most schedules link to [sefaria.org](https://www.sefaria.org/); Daf Yomi
+and Daf-a-Week fall back to [dafyomi.org](https://www.dafyomi.org/) for the
+Kinnim and Midot tractates. A few events have no page and return `""`:
+
+  - `yerushalmi-schottenstein` — only the Vilna edition is mapped to
+    Sefaria references, so the Schottenstein edition has no URL.
+  - `rambam3` — a URL is returned only when the day's three chapters
+    collapse to a single Mishneh Torah section; days spanning multiple
+    sections return `""`.
+
+The generated URLs match those produced by `@hebcal/learning` exactly,
+verified day-by-day across all schedules over a 50-year span.
+
 ## Registered calendar names
 
 The schedules register the following case-insensitive names with the
