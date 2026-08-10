@@ -1630,12 +1630,12 @@ func TestYerushalmiYomi2082(t *testing.T) {
 func TestRender(t *testing.T) {
 	assert := assert.New(t)
 	hd := hdate.FromRD(738473) // 14 November 2022
-	ev := yerushalmi.NewYerushalmiYomiEvent(hd, yerushalmi.New(hd, yerushalmi.Schottenstein))
+	ev := yerushalmi.NewYerushalmiYomiEvent(hd, yerushalmi.New(hd, yerushalmi.Schottenstein), yerushalmi.Schottenstein)
 	assert.Equal("Yerushalmi Berakhot 1", ev.Render("en"))
 	assert.Equal("יְרוּשַׁלְמִי ברכות דף א", ev.Render("he"))
 
 	hd = hdate.FromRD(738500)
-	ev = yerushalmi.NewYerushalmiYomiEvent(hd, yerushalmi.New(hd, yerushalmi.Vilna))
+	ev = yerushalmi.NewYerushalmiYomiEvent(hd, yerushalmi.New(hd, yerushalmi.Vilna), yerushalmi.Vilna)
 	assert.Equal("Yerushalmi Berakhot 28", ev.Render("en"))
 	assert.Equal("יְרוּשַׁלְמִי ברכות דף כח", ev.Render("he"))
 }

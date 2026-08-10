@@ -23,8 +23,18 @@ import (
 	"github.com/hebcal/hdate"
 	"github.com/hebcal/hebcal-go/event"
 	"github.com/hebcal/learning/internal/hebrew"
+	"github.com/hebcal/learning/internal/sefaria"
 	"github.com/hebcal/locales"
 )
+
+// readingURL returns a link to sefaria.org for a single Mishneh Torah
+// reading, e.g. https://www.sefaria.org/Mishneh_Torah%2C_Kings_and_Wars.4?lang=bi .
+func readingURL(r Reading) string {
+	name := "Mishneh Torah, " + r.Name + "." + r.Perek
+	name = strings.ReplaceAll(name, " ", "_")
+	name = strings.ReplaceAll(name, ":", ".")
+	return "https://www.sefaria.org/" + sefaria.EncodeURIComponent(name) + "?lang=bi"
+}
 
 // renderReading renders a single Mishneh Torah reading in the given locale.
 func renderReading(r Reading, locale string) string {
@@ -75,6 +85,11 @@ func (ev rambam1Event) GetCategories() []string {
 	return []string{"rambam1"}
 }
 
+// URL returns a link to sefaria.org for the chapter.
+func (ev rambam1Event) URL() string {
+	return readingURL(ev.Reading)
+}
+
 // --- 3 chapters a day ---
 
 type rambam3Event struct {
@@ -111,4 +126,14 @@ func (ev rambam3Event) Basename() string {
 
 func (ev rambam3Event) GetCategories() []string {
 	return []string{"rambam3"}
+}
+
+// URL returns a link to sefaria.org when the day's three chapters collapse
+// to a single reading; otherwise it returns "" (the multi-reading links are
+// carried in the memo in the TypeScript implementation).
+func (ev rambam3Event) URL() string {
+	if len(ev.Readings) == 1 {
+		return readingURL(ev.Readings[0])
+	}
+	return ""
 }
