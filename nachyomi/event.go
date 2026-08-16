@@ -53,7 +53,7 @@ func (ev nachYomiEvent) Render(locale string) string {
 }
 
 func (ev nachYomiEvent) GetFlags() event.HolidayFlags {
-	return event.NACH_YOMI
+	return event.NACH_YOMI | event.DAILY_LEARNING
 }
 
 func (ev nachYomiEvent) GetEmoji() string {

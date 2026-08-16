@@ -50,7 +50,7 @@ func (ev dafYomiEvent) Render(locale string) string {
 }
 
 func (ev dafYomiEvent) GetFlags() event.HolidayFlags {
-	return event.DAF_YOMI
+	return event.DAF_YOMI | event.DAILY_LEARNING
 }
 
 func (ev dafYomiEvent) GetEmoji() string {

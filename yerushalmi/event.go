@@ -56,7 +56,7 @@ func (ev yyomiEvent) Render(locale string) string {
 }
 
 func (ev yyomiEvent) GetFlags() event.HolidayFlags {
-	return event.YERUSHALMI_YOMI
+	return event.YERUSHALMI_YOMI | event.DAILY_LEARNING
 }
 
 func (ev yyomiEvent) GetEmoji() string {
