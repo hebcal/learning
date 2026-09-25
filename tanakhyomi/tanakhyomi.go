@@ -336,7 +336,7 @@ func holidaySkips(year int) map[int64]bool {
 	}
 	set := map[int64]bool{}
 	for _, ev := range hebcal.GetHolidaysForYear(year, true) {
-		if ev.Flags&event.CHAG != 0 || toSkip[ev.Desc] {
+		if ev.Flags.Has(event.CHAG) || toSkip[ev.Desc] {
 			set[ev.Date.Abs()] = true
 		}
 	}
