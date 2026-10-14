@@ -22,6 +22,10 @@ func TestURL(t *testing.T) {
 			"https://www.sefaria.org/II_Chronicles.26.2-29.10?lang=bi"},
 		{tanakhyomi.Reading{Name: "Minor Prophets", Blatt: "15", Verses: "Zephaniah 3:20"},
 			"https://www.sefaria.org/Zephaniah.3.20?lang=bi"},
+		{tanakhyomi.Reading{Name: "Minor Prophets", Blatt: "4", Verses: "Hosea 14:6-Joel 2:26"},
+			"https://www.sefaria.org/Hosea.14.6-14.10?lang=bi"},
+		{tanakhyomi.Reading{Name: "Joshua", Blatt: "6", Verses: "10:8-41"},
+			"https://www.sefaria.org/Joshua.10.8-41?lang=bi"},
 	}
 	for _, tc := range cases {
 		ev := tanakhyomi.NewTanakhYomiEvent(hd, tc.reading)
