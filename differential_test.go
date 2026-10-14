@@ -124,19 +124,24 @@ func TestDifferentialYerushalmiSchottenstein(t *testing.T) {
 	checkBlocks(t, blocks, serializeYerushalmi(yerushalmi.Schottenstein, "schottenstein"))
 }
 
+// TestDifferentialTanakhYomi was regenerated when the Masoretic table gained
+// the second-book half of the 12 sedarim that cross a book boundary (and
+// colons in the Joshua 4.1/4.2 split). With those 14 verse strings mapped
+// back to their old values, every block reproduced the previous checksum, so
+// the cycle itself is unchanged.
 func TestDifferentialTanakhYomi(t *testing.T) {
 	blocks := []block{
-		{711426, 720258, 8833, 0xd58af23c},
-		{720259, 729389, 9131, 0xd252a3ac},
-		{729390, 738520, 9131, 0xf3bccb9e},
-		{738521, 747651, 9131, 0xb8a47a3f},
-		{747652, 756783, 9132, 0xe939e41f},
-		{756784, 765914, 9131, 0x6faddd74},
-		{765915, 775044, 9130, 0xd37f7312},
-		{775045, 784175, 9131, 0x02574a54},
-		{784176, 793307, 9132, 0x4f99fcd7},
-		{793308, 802438, 9131, 0x9f0591c2},
-		{802439, 803533, 1095, 0x2640b732},
+		{711426, 720258, 8833, 0xfca01a97},
+		{720259, 729389, 9131, 0xa3fa16d2},
+		{729390, 738520, 9131, 0x1fbea38e},
+		{738521, 747651, 9131, 0xb772adf5},
+		{747652, 756783, 9132, 0xff02b225},
+		{756784, 765914, 9131, 0x89e491b4},
+		{765915, 775044, 9130, 0x8b426ca0},
+		{775045, 784175, 9131, 0x27c8d86e},
+		{784176, 793307, 9132, 0x7d8dc4d3},
+		{793308, 802438, 9131, 0xd71339ec},
+		{802439, 803533, 1095, 0x5f47fbf4},
 	}
 	assert.Equal(t, tanakhyomi.TanakhYomiStart, blocks[0].startAbs)
 	checkBlocks(t, blocks, serializeTanakhYomi)
