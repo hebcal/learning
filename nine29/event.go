@@ -42,14 +42,21 @@ func (ev nine29Event) GetDate() hdate.HDate {
 	return ev.Date
 }
 
+// Render returns the chapter followed by its day in the cycle, e.g.
+// "Deuteronomy 34 (187)".
 func (ev nine29Event) Render(locale string) string {
+	return ev.RenderBrief(locale) + " (" + strconv.Itoa(ev.Reading.CycleChap) + ")"
+}
+
+// RenderBrief returns the chapter without its day in the cycle, e.g.
+// "Deuteronomy 34" or "דְּבָרִים ל״ד".
+func (ev nine29Event) RenderBrief(locale string) string {
 	r := ev.Reading
-	cycleChap := " (" + strconv.Itoa(r.CycleChap) + ")"
 	if isHebrewLocale(locale) {
 		name, _ := locales.LookupTranslation(r.Book, locale)
-		return name + " " + gematriya.Gematriya(r.BookChap) + cycleChap
+		return name + " " + gematriya.Gematriya(r.BookChap)
 	}
-	return r.Book + " " + strconv.Itoa(r.BookChap) + cycleChap
+	return r.Book + " " + strconv.Itoa(r.BookChap)
 }
 
 func (ev nine29Event) GetFlags() event.HolidayFlags {
