@@ -62,6 +62,23 @@ func (ev tanakhYomiEvent) Render(locale string) string {
 	return s
 }
 
+// RenderBrief returns Render's text with "Seder" abbreviated, e.g.
+// "Kings S6 (I Kings 7:21-8:10)". The verse range stays: it is the reading
+// itself, not supplementary detail.
+func (ev tanakhYomiEvent) RenderBrief(locale string) string {
+	return strings.Replace(ev.Render(locale), " Seder ", " S", 1)
+}
+
+// Memo returns the seder's verse range, always naming its book, e.g.
+// "Isaiah 1:1-4:2" or "I Kings 7:21-8:10", in every locale.
+func (ev tanakhYomiEvent) Memo(locale string) string {
+	v := ev.Reading.Verses
+	if v != "" && v[0] >= '0' && v[0] <= '9' {
+		return ev.Reading.Name + " " + v
+	}
+	return v
+}
+
 func isHebrew(locale string) bool {
 	l := strings.ToLower(locale)
 	return l == "he" || l == "he-x-nonikud"

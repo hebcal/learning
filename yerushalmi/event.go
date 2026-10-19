@@ -47,12 +47,18 @@ func (ev yyomiEvent) GetDate() hdate.HDate {
 
 func (ev yyomiEvent) Render(locale string) string {
 	yerushalmiStr, _ := locales.LookupTranslation("Yerushalmi", locale)
+	return yerushalmiStr + " " + ev.RenderBrief(locale)
+}
+
+// RenderBrief returns the tractate and page without the "Yerushalmi" prefix,
+// e.g. "Beitzah 21" or "ביצה דף כא".
+func (ev yyomiEvent) RenderBrief(locale string) string {
 	name, _ := locales.LookupTranslation(ev.Daf.Name, locale)
 	locale = strings.ToLower(locale)
 	if locale == "he" || locale == "he-x-nonikud" {
-		return yerushalmiStr + " " + name + " דף " + hebrew.GematriyaNN(ev.Daf.Blatt)
+		return name + " דף " + hebrew.GematriyaNN(ev.Daf.Blatt)
 	}
-	return yerushalmiStr + " " + name + " " + strconv.Itoa(ev.Daf.Blatt)
+	return name + " " + strconv.Itoa(ev.Daf.Blatt)
 }
 
 func (ev yyomiEvent) GetFlags() event.HolidayFlags {

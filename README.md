@@ -91,10 +91,32 @@ Kinnim and Midot tractates. A few events have no page and return `""`:
     Sefaria references, so the Schottenstein edition has no URL.
   - `rambam3` — a URL is returned only when the day's three chapters
     collapse to a single Mishneh Torah section; days spanning multiple
-    sections return `""`.
+    sections return `""`; their links are in the event's memo (below).
 
 The generated URLs match those produced by `@hebcal/learning` exactly,
 verified day-by-day across all schedules over a 50-year span.
+
+## Brief renderings and memos
+
+Where `@hebcal/learning`'s `renderBrief()` differs from `render()`, the event
+also has a `RenderBrief(locale)` method (hebcal-go's `event.BriefRenderer`),
+for calendars with little room per row:
+
+  - `929` — the chapter without its day in the cycle: `Job 11` for
+    `Job 11 (759)`.
+  - `yerushalmi-vilna`, `yerushalmi-schottenstein` — no "Yerushalmi" prefix:
+    `Shekalim 17`.
+  - `tanakhYomi` — "Seder" abbreviated: `Samuel S31 (II Samuel 18:27-19:39)`.
+
+Every other schedule's `Render` is already the brief form. (Daf Yomi's is too:
+`@hebcal/learning`'s `render()` prefixes "Daf Yomi:", this one does not.)
+
+Two schedules carry a `Memo(locale)` with the longer description
+`@hebcal/learning` puts in the event's memo, in English in every locale:
+
+  - `tanakhYomi` — the verse range with its book: `II Samuel 18:27-19:39`.
+  - `rambam3` — on days spanning more than one section, each reading and its
+    sefaria.org link, separated by a blank line.
 
 ## Registered calendar names
 

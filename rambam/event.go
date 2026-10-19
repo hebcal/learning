@@ -128,9 +128,30 @@ func (ev rambam3Event) GetCategories() []string {
 	return []string{"rambam3"}
 }
 
+// Memo lists each reading with its sefaria.org link, a blank line between
+// them, when the day's three chapters do not collapse to a single reading:
+//
+//	Neighbors 13-14
+//	https://www.sefaria.org/Mishneh_Torah%2C_Neighbors.13-14?lang=bi
+//
+//	Agents and Partners 1
+//	https://www.sefaria.org/Mishneh_Torah%2C_Agents_and_Partners.1?lang=bi
+//
+// A single reading has no memo; its link is URL's. The memo is English in
+// every locale.
+func (ev rambam3Event) Memo(locale string) string {
+	if len(ev.Readings) < 2 {
+		return ""
+	}
+	parts := make([]string, len(ev.Readings))
+	for i, r := range ev.Readings {
+		parts[i] = r.String() + "\n" + readingURL(r)
+	}
+	return strings.Join(parts, "\n\n")
+}
+
 // URL returns a link to sefaria.org when the day's three chapters collapse
-// to a single reading; otherwise it returns "" (the multi-reading links are
-// carried in the memo in the TypeScript implementation).
+// to a single reading; otherwise it returns "", and the links are in Memo.
 func (ev rambam3Event) URL() string {
 	if len(ev.Readings) == 1 {
 		return readingURL(ev.Readings[0])
