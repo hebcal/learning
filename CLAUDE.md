@@ -19,7 +19,7 @@ how `@hebcal/learning` plugs into `@hebcal/core`.
     plugin schedules. `RenderBrief(locale)` and `Memo(locale)` are optional
     (`event.BriefRenderer`, `event.Memoer`): implement them only where
     @hebcal/learning's `renderBrief()` / `memo` differ from `render()`.
-  - `hebcal` — `HebrewCalendar` reads `CalOptions.DailyLearning []string` and
+  - `hebcal` — `HebrewCalendar` reads `Options.DailyLearning []string` and
     looks up each name per day. (`DafYomi`/`MishnaYomi`/`NachYomi`/`YerushalmiYomi`
     bools also resolve through the registry.)
 - **This module** (`learning`) depends on hebcal-go and supplies the schedules.

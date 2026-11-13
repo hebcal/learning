@@ -50,7 +50,7 @@ func hd2iso(hd hdate.HDate) string {
 	return d.Format(time.RFC3339)[:10]
 }
 
-func checkEvents(t *testing.T, locale string, opts *hebcal.CalOptions, want []string) {
+func checkEvents(t *testing.T, locale string, opts *hebcal.Options, want []string) {
 	events, err := hebcal.HebrewCalendar(opts)
 	assert.NoError(t, err)
 	got := make([]string, 0, len(events))
@@ -62,7 +62,7 @@ func checkEvents(t *testing.T, locale string, opts *hebcal.CalOptions, want []st
 }
 
 func TestHebrewCalendarMishnaYomiOnly(t *testing.T) {
-	opts := &hebcal.CalOptions{
+	opts := &hebcal.Options{
 		Start:      hdate.New(5782, hdate.Kislev, 23),
 		End:        hdate.New(5782, hdate.Kislev, 29),
 		MishnaYomi: true,
@@ -80,7 +80,7 @@ func TestHebrewCalendarMishnaYomiOnly(t *testing.T) {
 }
 
 func TestHebrewCalendarYYomi(t *testing.T) {
-	opts := &hebcal.CalOptions{
+	opts := &hebcal.Options{
 		NoHolidays:     true,
 		YerushalmiYomi: true,
 		Start:          hdate.New(5783, hdate.Cheshvan, 18),
@@ -97,7 +97,7 @@ func TestHebrewCalendarYYomi(t *testing.T) {
 }
 
 func TestHebrewCalendarSchottenstein(t *testing.T) {
-	opts := hebcal.CalOptions{
+	opts := hebcal.Options{
 		NoHolidays:        true,
 		YerushalmiYomi:    true,
 		YerushalmiEdition: hebcal.Schottenstein,
@@ -160,23 +160,23 @@ func TestHebrewCalendarSchottenstein(t *testing.T) {
 }
 
 func TestDailyLearningOption(t *testing.T) {
-	// The generic CalOptions.DailyLearning []string surfaces any registered
+	// The generic Options.DailyLearning []string surfaces any registered
 	// schedule by name through HebrewCalendar.
-	checkEvents(t, "en", &hebcal.CalOptions{
+	checkEvents(t, "en", &hebcal.Options{
 		Start:         hdate.FromGregorian(2014, time.December, 21),
 		End:           hdate.FromGregorian(2014, time.December, 21),
 		NoHolidays:    true,
 		DailyLearning: []string{"929"},
 	}, []string{"2014-12-21 Genesis 1 (1)"})
 
-	checkEvents(t, "en", &hebcal.CalOptions{
+	checkEvents(t, "en", &hebcal.Options{
 		Start:         hdate.FromGregorian(1987, time.February, 1),
 		End:           hdate.FromGregorian(1987, time.February, 1),
 		NoHolidays:    true,
 		DailyLearning: []string{"rambam1"},
 	}, []string{"1987-02-01 Kings and Wars 4"})
 
-	checkEvents(t, "en", &hebcal.CalOptions{
+	checkEvents(t, "en", &hebcal.Options{
 		Start:         hdate.FromGregorian(2020, time.July, 9),
 		End:           hdate.FromGregorian(2020, time.July, 9),
 		NoHolidays:    true,
@@ -185,7 +185,7 @@ func TestDailyLearningOption(t *testing.T) {
 }
 
 func TestNachYomi(t *testing.T) {
-	opts := hebcal.CalOptions{
+	opts := hebcal.Options{
 		Start:      hdate.FromGregorian(2022, time.January, 20),
 		End:        hdate.FromGregorian(2024, time.January, 31),
 		NoHolidays: true,

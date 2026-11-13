@@ -49,7 +49,7 @@ import (
 	_ "github.com/hebcal/learning" // registers all learning schedules
 )
 
-opts := &hebcal.CalOptions{
+opts := &hebcal.Options{
 	Start:         hdate.New(5783, hdate.Cheshvan, 18),
 	End:           hdate.New(5783, hdate.Cheshvan, 23),
 	DailyLearning: []string{"dafYomi", "rambam3"},
