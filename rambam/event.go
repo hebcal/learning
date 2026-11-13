@@ -66,22 +66,26 @@ func isHebrewLocale(locale string) bool {
 // --- 1 chapter a day ---
 
 type rambam1Event struct {
-	Date    hdate.HDate
+	date    hdate.HDate
 	Reading Reading
 }
 
 // NewDailyRambam1Event returns a calendar event for the 1-chapter-a-day
 // Daily Rambam reading on the given date.
 func NewDailyRambam1Event(hd hdate.HDate, reading Reading) event.CalEvent {
-	return rambam1Event{Date: hd, Reading: reading}
+	return rambam1Event{date: hd, Reading: reading}
 }
 
-func (ev rambam1Event) GetDate() hdate.HDate         { return ev.Date }
-func (ev rambam1Event) Render(locale string) string  { return renderReading(ev.Reading, locale) }
-func (ev rambam1Event) GetFlags() event.HolidayFlags { return event.DAILY_LEARNING }
-func (ev rambam1Event) GetEmoji() string             { return "" }
-func (ev rambam1Event) Basename() string             { return ev.Reading.String() }
-func (ev rambam1Event) GetCategories() []string {
+func (ev rambam1Event) Date() hdate.HDate           { return ev.date }
+func (ev rambam1Event) Render(locale string) string { return renderReading(ev.Reading, locale) }
+func (ev rambam1Event) Flags() event.Flags          { return event.DailyLearning }
+func (ev rambam1Event) Emoji() string               { return "" }
+func (ev rambam1Event) Basename() string            { return ev.Reading.String() }
+
+// Desc returns the untranslated description, the same as Basename.
+func (ev rambam1Event) Desc() string { return ev.Basename() }
+
+func (ev rambam1Event) Categories() []string {
 	return []string{"rambam1"}
 }
 
@@ -93,7 +97,7 @@ func (ev rambam1Event) URL() string {
 // --- 3 chapters a day ---
 
 type rambam3Event struct {
-	Date     hdate.HDate
+	date     hdate.HDate
 	Readings []Reading // collapsed for display
 }
 
@@ -101,12 +105,12 @@ type rambam3Event struct {
 // Daily Rambam reading on the given date. Adjacent chapters in the same
 // section are collapsed into a single range for display.
 func NewDailyRambam3Event(hd hdate.HDate, readings []Reading) event.CalEvent {
-	return rambam3Event{Date: hd, Readings: collapseAdjacent(readings)}
+	return rambam3Event{date: hd, Readings: collapseAdjacent(readings)}
 }
 
-func (ev rambam3Event) GetDate() hdate.HDate         { return ev.Date }
-func (ev rambam3Event) GetFlags() event.HolidayFlags { return event.DAILY_LEARNING }
-func (ev rambam3Event) GetEmoji() string             { return "" }
+func (ev rambam3Event) Date() hdate.HDate  { return ev.date }
+func (ev rambam3Event) Flags() event.Flags { return event.DailyLearning }
+func (ev rambam3Event) Emoji() string      { return "" }
 
 func (ev rambam3Event) Render(locale string) string {
 	parts := make([]string, len(ev.Readings))
@@ -116,6 +120,9 @@ func (ev rambam3Event) Render(locale string) string {
 	return strings.Join(parts, ", ")
 }
 
+// Desc returns the untranslated description, the same as Basename.
+func (ev rambam3Event) Desc() string { return ev.Basename() }
+
 func (ev rambam3Event) Basename() string {
 	parts := make([]string, len(ev.Readings))
 	for i, r := range ev.Readings {
@@ -124,7 +131,7 @@ func (ev rambam3Event) Basename() string {
 	return strings.Join(parts, ", ")
 }
 
-func (ev rambam3Event) GetCategories() []string {
+func (ev rambam3Event) Categories() []string {
 	return []string{"rambam3"}
 }
 

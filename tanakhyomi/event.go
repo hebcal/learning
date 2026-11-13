@@ -29,18 +29,18 @@ import (
 )
 
 type tanakhYomiEvent struct {
-	Date    hdate.HDate
+	date    hdate.HDate
 	Reading Reading
 }
 
 // NewTanakhYomiEvent returns a calendar event for the Tanakh Yomi reading
 // on the given date.
 func NewTanakhYomiEvent(hd hdate.HDate, reading Reading) event.CalEvent {
-	return tanakhYomiEvent{Date: hd, Reading: reading}
+	return tanakhYomiEvent{date: hd, Reading: reading}
 }
 
-func (ev tanakhYomiEvent) GetDate() hdate.HDate {
-	return ev.Date
+func (ev tanakhYomiEvent) Date() hdate.HDate {
+	return ev.date
 }
 
 // Render returns the seder followed by its verse range, e.g.
@@ -164,19 +164,22 @@ func sederHebrew(blatt string) string {
 	return blatt
 }
 
-func (ev tanakhYomiEvent) GetFlags() event.HolidayFlags {
-	return event.DAILY_LEARNING
+func (ev tanakhYomiEvent) Flags() event.Flags {
+	return event.DailyLearning
 }
 
-func (ev tanakhYomiEvent) GetEmoji() string {
+func (ev tanakhYomiEvent) Emoji() string {
 	return ""
 }
+
+// Desc returns the untranslated description, the same as Basename.
+func (ev tanakhYomiEvent) Desc() string { return ev.Basename() }
 
 func (ev tanakhYomiEvent) Basename() string {
 	return ev.Render("en")
 }
 
-func (ev tanakhYomiEvent) GetCategories() []string {
+func (ev tanakhYomiEvent) Categories() []string {
 	return []string{"tanakhYomi"}
 }
 

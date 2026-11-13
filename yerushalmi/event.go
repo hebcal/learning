@@ -29,7 +29,7 @@ import (
 )
 
 type yyomiEvent struct {
-	Date    hdate.HDate
+	date    hdate.HDate
 	Daf     dafyomi.Daf
 	Edition Edition
 }
@@ -38,11 +38,11 @@ type yyomiEvent struct {
 // (Jerusalem Talmud) on the given date. edition is Vilna or Schottenstein;
 // only the Vilna edition carries a sefaria.org URL.
 func NewYerushalmiYomiEvent(hd hdate.HDate, daf dafyomi.Daf, edition Edition) event.CalEvent {
-	return yyomiEvent{Date: hd, Daf: daf, Edition: edition}
+	return yyomiEvent{date: hd, Daf: daf, Edition: edition}
 }
 
-func (ev yyomiEvent) GetDate() hdate.HDate {
-	return ev.Date
+func (ev yyomiEvent) Date() hdate.HDate {
+	return ev.date
 }
 
 func (ev yyomiEvent) Render(locale string) string {
@@ -61,19 +61,22 @@ func (ev yyomiEvent) RenderBrief(locale string) string {
 	return name + " " + strconv.Itoa(ev.Daf.Blatt)
 }
 
-func (ev yyomiEvent) GetFlags() event.HolidayFlags {
-	return event.YERUSHALMI_YOMI | event.DAILY_LEARNING
+func (ev yyomiEvent) Flags() event.Flags {
+	return event.YerushalmiYomi | event.DailyLearning
 }
 
-func (ev yyomiEvent) GetEmoji() string {
+func (ev yyomiEvent) Emoji() string {
 	return ""
 }
+
+// Desc returns the untranslated description, the same as Basename.
+func (ev yyomiEvent) Desc() string { return ev.Basename() }
 
 func (ev yyomiEvent) Basename() string {
 	return ev.Daf.String()
 }
 
-func (ev yyomiEvent) GetCategories() []string {
+func (ev yyomiEvent) Categories() []string {
 	return []string{"yerushalmi"}
 }
 

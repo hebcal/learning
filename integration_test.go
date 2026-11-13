@@ -27,12 +27,12 @@ func TestRegistry(t *testing.T) {
 	assert := assert.New(t)
 	assert.Equal(
 		[]string{"929", "dafweekly", "dafweeklysunday", "dafyomi", "mishnayomi", "nachyomi", "perekyomi", "pirkeiavotsummer", "psalms", "rambam1", "rambam3", "tanakhyomi", "yerushalmi-schottenstein", "yerushalmi-vilna"},
-		dailylearning.GetCalendars(),
+		dailylearning.Calendars(),
 	)
 
 	ev := dailylearning.Lookup("929", hdate.FromGregorian(2014, time.December, 21), false)
 	assert.Equal("Genesis 1 (1)", ev.Render("en"))
-	assert.Equal(event.DAILY_LEARNING, ev.GetFlags())
+	assert.Equal(event.DailyLearning, ev.Flags())
 
 	ev = dailylearning.Lookup("rambam1", hdate.FromGregorian(1987, time.February, 1), false)
 	assert.Equal("Kings and Wars 4", ev.Render("en"))
@@ -50,19 +50,19 @@ func hd2iso(hd hdate.HDate) string {
 	return d.Format(time.RFC3339)[:10]
 }
 
-func checkEvents(t *testing.T, locale string, opts *hebcal.CalOptions, want []string) {
+func checkEvents(t *testing.T, locale string, opts *hebcal.Options, want []string) {
 	events, err := hebcal.HebrewCalendar(opts)
 	assert.NoError(t, err)
 	got := make([]string, 0, len(events))
 	for _, ev := range events {
-		line := fmt.Sprintf("%s %s", hd2iso(ev.GetDate()), ev.Render(locale))
+		line := fmt.Sprintf("%s %s", hd2iso(ev.Date()), ev.Render(locale))
 		got = append(got, line)
 	}
 	assert.Equal(t, want, got)
 }
 
 func TestHebrewCalendarMishnaYomiOnly(t *testing.T) {
-	opts := &hebcal.CalOptions{
+	opts := &hebcal.Options{
 		Start:      hdate.New(5782, hdate.Kislev, 23),
 		End:        hdate.New(5782, hdate.Kislev, 29),
 		MishnaYomi: true,
@@ -80,7 +80,7 @@ func TestHebrewCalendarMishnaYomiOnly(t *testing.T) {
 }
 
 func TestHebrewCalendarYYomi(t *testing.T) {
-	opts := &hebcal.CalOptions{
+	opts := &hebcal.Options{
 		NoHolidays:     true,
 		YerushalmiYomi: true,
 		Start:          hdate.New(5783, hdate.Cheshvan, 18),
@@ -97,7 +97,7 @@ func TestHebrewCalendarYYomi(t *testing.T) {
 }
 
 func TestHebrewCalendarSchottenstein(t *testing.T) {
-	opts := hebcal.CalOptions{
+	opts := hebcal.Options{
 		NoHolidays:        true,
 		YerushalmiYomi:    true,
 		YerushalmiEdition: hebcal.Schottenstein,
@@ -111,7 +111,7 @@ func TestHebrewCalendarSchottenstein(t *testing.T) {
 	for _, ev := range events {
 		desc := ev.Render("en")
 		if strings.HasSuffix(desc, " 1") {
-			line := fmt.Sprintf("%s %s", hd2iso(ev.GetDate()), desc)
+			line := fmt.Sprintf("%s %s", hd2iso(ev.Date()), desc)
 			actual = append(actual, line)
 		}
 	}
@@ -160,23 +160,23 @@ func TestHebrewCalendarSchottenstein(t *testing.T) {
 }
 
 func TestDailyLearningOption(t *testing.T) {
-	// The generic CalOptions.DailyLearning []string surfaces any registered
+	// The generic Options.DailyLearning []string surfaces any registered
 	// schedule by name through HebrewCalendar.
-	checkEvents(t, "en", &hebcal.CalOptions{
+	checkEvents(t, "en", &hebcal.Options{
 		Start:         hdate.FromGregorian(2014, time.December, 21),
 		End:           hdate.FromGregorian(2014, time.December, 21),
 		NoHolidays:    true,
 		DailyLearning: []string{"929"},
 	}, []string{"2014-12-21 Genesis 1 (1)"})
 
-	checkEvents(t, "en", &hebcal.CalOptions{
+	checkEvents(t, "en", &hebcal.Options{
 		Start:         hdate.FromGregorian(1987, time.February, 1),
 		End:           hdate.FromGregorian(1987, time.February, 1),
 		NoHolidays:    true,
 		DailyLearning: []string{"rambam1"},
 	}, []string{"1987-02-01 Kings and Wars 4"})
 
-	checkEvents(t, "en", &hebcal.CalOptions{
+	checkEvents(t, "en", &hebcal.Options{
 		Start:         hdate.FromGregorian(2020, time.July, 9),
 		End:           hdate.FromGregorian(2020, time.July, 9),
 		NoHolidays:    true,
@@ -185,7 +185,7 @@ func TestDailyLearningOption(t *testing.T) {
 }
 
 func TestNachYomi(t *testing.T) {
-	opts := hebcal.CalOptions{
+	opts := hebcal.Options{
 		Start:      hdate.FromGregorian(2022, time.January, 20),
 		End:        hdate.FromGregorian(2024, time.January, 31),
 		NoHolidays: true,
@@ -197,7 +197,7 @@ func TestNachYomi(t *testing.T) {
 
 	actual := make([]string, 0, len(events))
 	for _, ev := range events {
-		line := fmt.Sprintf("%s,%s", hd2iso(ev.GetDate()), ev.Render("en"))
+		line := fmt.Sprintf("%s,%s", hd2iso(ev.Date()), ev.Render("en"))
 		actual = append(actual, line)
 	}
 
@@ -946,4 +946,28 @@ func TestNachYomi(t *testing.T) {
 		"2024-01-31,II Chronicles 36",
 	}
 	assert.Equal(t, expected, actual)
+}
+
+// Every schedule's events implement the whole of event.CalEvent. Desc is the
+// untranslated description, the same string as Basename: consumers build
+// stable identifiers (iCalendar UIDs) from it, so it must not drift.
+func TestDescIsBasename(t *testing.T) {
+	hd := hdate.FromGregorian(2026, time.May, 3) // a Sunday in Pirkei Avot season
+	names := dailylearning.Calendars()
+	assert.NotEmpty(t, names)
+	for _, name := range names {
+		found := false
+		for i := 0; i < 7 && !found; i++ {
+			ev := dailylearning.Lookup(name, hdate.FromRD(hd.Abs()+int64(i)), false)
+			if ev == nil {
+				continue
+			}
+			found = true
+			assert.NotEmpty(t, ev.Desc(), name)
+			assert.Equal(t, ev.Basename(), ev.Desc(), name)
+			assert.Equal(t, ev.Render("en") != "", true, name)
+			_ = ev.URL() // "" is a valid answer: Schottenstein has no page
+		}
+		assert.True(t, found, "no %s event in the week of %s", name, hd)
+	}
 }

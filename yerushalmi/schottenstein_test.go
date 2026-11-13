@@ -21,7 +21,7 @@ func TestYerushalmiYomiSchottenstein(t *testing.T) {
 	endAbs := end.Abs()
 	for abs := start.Abs(); abs <= endAbs; abs++ {
 		hd := hdate.FromRD(abs)
-		daf := New(hd, Schottenstein)
+		daf := mustNew(hd, Schottenstein)
 		actual = append(actual, hd2iso(hd)+","+daf.String())
 	}
 	expected := []string{

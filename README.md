@@ -49,7 +49,7 @@ import (
 	_ "github.com/hebcal/learning" // registers all learning schedules
 )
 
-opts := &hebcal.CalOptions{
+opts := &hebcal.Options{
 	Start:         hdate.New(5783, hdate.Cheshvan, 18),
 	End:           hdate.New(5783, hdate.Cheshvan, 23),
 	DailyLearning: []string{"dafYomi", "rambam3"},
@@ -74,13 +74,13 @@ fmt.Println(daf) // Avodah Zarah 68
 
 ## Event URLs
 
-Every learning event implements the `event.URLer` interface from
-`hebcal-go`, returning a canonical link to the day's reading. Use the
-`event.URL` helper (which returns `""` for events that carry no page):
+Every learning event implements `URL()`, part of the `event.CalEvent`
+interface from `hebcal-go`, returning a canonical link to the day's reading
+(or `""` for an event that carries no page):
 
 ```go
 ev := dailylearning.Lookup("dafYomi", hdate.FromGregorian(2020, time.June, 18), false)
-fmt.Println(event.URL(ev)) // https://www.sefaria.org/Shabbat.104a?lang=bi
+fmt.Println(ev.URL()) // https://www.sefaria.org/Shabbat.104a?lang=bi
 ```
 
 Most schedules link to [sefaria.org](https://www.sefaria.org/); Daf Yomi

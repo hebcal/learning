@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/hebcal/hdate"
-	"github.com/hebcal/hebcal-go/event"
 	"github.com/hebcal/learning/dafyomi"
 	"github.com/stretchr/testify/assert"
 )
@@ -26,6 +25,6 @@ func TestURL(t *testing.T) {
 	}
 	for _, tc := range cases {
 		ev := dafyomi.NewDafYomiEvent(hd, tc.daf)
-		assert.Equal(tc.want, event.URL(ev), tc.daf.String())
+		assert.Equal(tc.want, ev.URL(), tc.daf.String())
 	}
 }

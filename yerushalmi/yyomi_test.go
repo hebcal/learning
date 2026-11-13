@@ -1,11 +1,13 @@
 package yerushalmi_test
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 	"time"
 
 	"github.com/hebcal/hdate"
+	"github.com/hebcal/hebcal-go/dailylearning"
 	"github.com/hebcal/learning/dafyomi"
 	"github.com/hebcal/learning/yerushalmi"
 	"github.com/stretchr/testify/assert"
@@ -14,21 +16,21 @@ import (
 func TestYerushalmiYomi(t *testing.T) {
 	assert := assert.New(t)
 	assert.Equal(dafyomi.Daf{Name: "Berakhot", Blatt: 1},
-		yerushalmi.New(hdate.FromGregorian(1997, time.March, 14), yerushalmi.Vilna))
+		mustNew(hdate.FromGregorian(1997, time.March, 14), yerushalmi.Vilna))
 	assert.Equal(dafyomi.Daf{Name: "Berakhot", Blatt: 2},
-		yerushalmi.New(hdate.FromGregorian(1997, time.March, 15), yerushalmi.Vilna))
+		mustNew(hdate.FromGregorian(1997, time.March, 15), yerushalmi.Vilna))
 	assert.Equal(dafyomi.Daf{Name: "Berakhot", Blatt: 3},
-		yerushalmi.New(hdate.FromGregorian(1997, time.March, 16), yerushalmi.Vilna))
+		mustNew(hdate.FromGregorian(1997, time.March, 16), yerushalmi.Vilna))
 	assert.Equal(dafyomi.Daf{Name: "Yevamot", Blatt: 49},
-		yerushalmi.New(hdate.FromGregorian(1999, time.September, 21), yerushalmi.Vilna))
+		mustNew(hdate.FromGregorian(1999, time.September, 21), yerushalmi.Vilna))
 	assert.Equal(dafyomi.Daf{Name: "Niddah", Blatt: 13},
-		yerushalmi.New(hdate.FromGregorian(2001, time.June, 22), yerushalmi.Vilna))
+		mustNew(hdate.FromGregorian(2001, time.June, 22), yerushalmi.Vilna))
 	assert.Equal(dafyomi.Daf{Name: "Berakhot", Blatt: 1},
-		yerushalmi.New(hdate.FromGregorian(2022, time.November, 14), yerushalmi.Vilna))
+		mustNew(hdate.FromGregorian(2022, time.November, 14), yerushalmi.Vilna))
 	assert.Equal(dafyomi.Daf{Name: "Peah", Blatt: 1},
-		yerushalmi.New(hdate.FromGregorian(2023, time.January, 21), yerushalmi.Vilna))
+		mustNew(hdate.FromGregorian(2023, time.January, 21), yerushalmi.Vilna))
 	assert.Equal(dafyomi.Daf{Name: "Berakhot", Blatt: 1},
-		yerushalmi.New(hdate.FromGregorian(1980, time.February, 2), yerushalmi.Vilna))
+		mustNew(hdate.FromGregorian(1980, time.February, 2), yerushalmi.Vilna))
 }
 
 func TestYerushalmiYomi2(t *testing.T) {
@@ -38,7 +40,7 @@ func TestYerushalmiYomi2(t *testing.T) {
 	endAbs := end.Abs()
 	for abs := start.Abs(); abs <= endAbs; abs++ {
 		hd := hdate.FromRD(abs)
-		daf := yerushalmi.New(hd, yerushalmi.Vilna)
+		daf := mustNew(hd, yerushalmi.Vilna)
 		actual = append(actual, hd.String()+","+daf.String())
 	}
 	expected := []string{
@@ -1610,7 +1612,7 @@ func TestYerushalmiYomi2(t *testing.T) {
 
 func ExampleNew() {
 	hd := hdate.FromGregorian(1995, time.December, 17)
-	daf := yerushalmi.New(hd, yerushalmi.Vilna)
+	daf := mustNew(hd, yerushalmi.Vilna)
 	fmt.Println(daf)
 	// Output: Nedarim 33
 }
@@ -1618,11 +1620,11 @@ func ExampleNew() {
 func TestYerushalmiYomi2082(t *testing.T) {
 	assert := assert.New(t)
 	assert.Equal(dafyomi.Daf{Name: "Niddah", Blatt: 12},
-		yerushalmi.New(hdate.FromGregorian(2082, time.October, 4), yerushalmi.Vilna))
+		mustNew(hdate.FromGregorian(2082, time.October, 4), yerushalmi.Vilna))
 	assert.Equal(dafyomi.Daf{Name: "Niddah", Blatt: 13},
-		yerushalmi.New(hdate.FromGregorian(2082, time.October, 5), yerushalmi.Vilna))
+		mustNew(hdate.FromGregorian(2082, time.October, 5), yerushalmi.Vilna))
 	assert.Equal(dafyomi.Daf{Name: "Berakhot", Blatt: 1},
-		yerushalmi.New(hdate.FromGregorian(2082, time.October, 6), yerushalmi.Vilna))
+		mustNew(hdate.FromGregorian(2082, time.October, 6), yerushalmi.Vilna))
 }
 
 // TestRender pins the event rendering, in particular that Hebrew blatt
@@ -1630,12 +1632,50 @@ func TestYerushalmiYomi2082(t *testing.T) {
 func TestRender(t *testing.T) {
 	assert := assert.New(t)
 	hd := hdate.FromRD(738473) // 14 November 2022
-	ev := yerushalmi.NewYerushalmiYomiEvent(hd, yerushalmi.New(hd, yerushalmi.Schottenstein), yerushalmi.Schottenstein)
+	ev := yerushalmi.NewYerushalmiYomiEvent(hd, mustNew(hd, yerushalmi.Schottenstein), yerushalmi.Schottenstein)
 	assert.Equal("Yerushalmi Berakhot 1", ev.Render("en"))
 	assert.Equal("יְרוּשַׁלְמִי ברכות דף א", ev.Render("he"))
 
 	hd = hdate.FromRD(738500)
-	ev = yerushalmi.NewYerushalmiYomiEvent(hd, yerushalmi.New(hd, yerushalmi.Vilna), yerushalmi.Vilna)
+	ev = yerushalmi.NewYerushalmiYomiEvent(hd, mustNew(hd, yerushalmi.Vilna), yerushalmi.Vilna)
 	assert.Equal("Yerushalmi Berakhot 28", ev.Render("en"))
 	assert.Equal("יְרוּשַׁלְמִי ברכות דף כח", ev.Render("he"))
+}
+
+// mustNew is yerushalmi.New for a date known to be within the cycle.
+func mustNew(hd hdate.HDate, edition yerushalmi.Edition) dafyomi.Daf {
+	daf, err := yerushalmi.New(hd, edition)
+	if err != nil {
+		panic(err)
+	}
+	return daf
+}
+
+// A date before an edition's cycle began is an error, not a panic, and the
+// registered calendars have no event for it.
+func TestBeforeCycle(t *testing.T) {
+	before := hdate.FromGregorian(1980, time.February, 1)
+	_, err := yerushalmi.New(before, yerushalmi.Vilna)
+	assert.True(t, errors.Is(err, yerushalmi.ErrBeforeCycle))
+	_, err = yerushalmi.New(before, yerushalmi.Schottenstein)
+	assert.True(t, errors.Is(err, yerushalmi.ErrBeforeCycle))
+
+	// In range for Vilna, before Schottenstein began.
+	hd := hdate.FromGregorian(2022, time.November, 13)
+	_, err = yerushalmi.New(hd, yerushalmi.Vilna)
+	assert.NoError(t, err)
+	_, err = yerushalmi.New(hd, yerushalmi.Schottenstein)
+	assert.True(t, errors.Is(err, yerushalmi.ErrBeforeCycle))
+	_, err = yerushalmi.New(hd.Next(), yerushalmi.Schottenstein)
+	assert.NoError(t, err)
+
+	assert.Nil(t, dailylearning.Lookup("yerushalmi-vilna", before, false))
+	assert.Nil(t, dailylearning.Lookup("yerushalmi-schottenstein", hd, false))
+	assert.NotNil(t, dailylearning.Lookup("yerushalmi-schottenstein", hd.Next(), false))
+
+	// A skipped day is not an error.
+	yk := hdate.New(5784, hdate.Tishrei, 10)
+	daf, err := yerushalmi.New(yk, yerushalmi.Vilna)
+	assert.NoError(t, err)
+	assert.Equal(t, 0, daf.Blatt)
 }
