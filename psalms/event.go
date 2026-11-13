@@ -63,6 +63,9 @@ func (ev psalmsEvent) GetEmoji() string {
 	return ""
 }
 
+// Desc returns the untranslated description, the same as Basename.
+func (ev psalmsEvent) Desc() string { return ev.Basename() }
+
 func (ev psalmsEvent) Basename() string {
 	return "Psalms " + ev.Reading.String()
 }

@@ -66,6 +66,9 @@ func (ev mishnaYomiEvent) GetEmoji() string {
 	return ""
 }
 
+// Desc returns the untranslated description, the same as Basename.
+func (ev mishnaYomiEvent) Desc() string { return ev.Basename() }
+
 func (ev mishnaYomiEvent) Basename() string {
 	return ev.Mishna.String()
 }

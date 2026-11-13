@@ -947,3 +947,27 @@ func TestNachYomi(t *testing.T) {
 	}
 	assert.Equal(t, expected, actual)
 }
+
+// Every schedule's events implement the whole of event.CalEvent. Desc is the
+// untranslated description, the same string as Basename: consumers build
+// stable identifiers (iCalendar UIDs) from it, so it must not drift.
+func TestDescIsBasename(t *testing.T) {
+	hd := hdate.FromGregorian(2026, time.May, 3) // a Sunday in Pirkei Avot season
+	names := dailylearning.GetCalendars()
+	assert.NotEmpty(t, names)
+	for _, name := range names {
+		found := false
+		for i := 0; i < 7 && !found; i++ {
+			ev := dailylearning.Lookup(name, hdate.FromRD(hd.Abs()+int64(i)), false)
+			if ev == nil {
+				continue
+			}
+			found = true
+			assert.NotEmpty(t, ev.Desc(), name)
+			assert.Equal(t, ev.Basename(), ev.Desc(), name)
+			assert.Equal(t, ev.Render("en") != "", true, name)
+			_ = ev.URL() // "" is a valid answer: Schottenstein has no page
+		}
+		assert.True(t, found, "no %s event in the week of %s", name, hd)
+	}
+}

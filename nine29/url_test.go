@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/hebcal/hdate"
-	"github.com/hebcal/hebcal-go/event"
 	"github.com/hebcal/learning/nine29"
 	"github.com/stretchr/testify/assert"
 )
@@ -22,6 +21,6 @@ func TestURL(t *testing.T) {
 	}
 	for _, tc := range cases {
 		ev := nine29.NewNine29Event(hd, tc.reading)
-		assert.Equal(tc.want, event.URL(ev), tc.reading.String())
+		assert.Equal(tc.want, ev.URL(), tc.reading.String())
 	}
 }

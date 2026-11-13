@@ -172,6 +172,9 @@ func (ev tanakhYomiEvent) GetEmoji() string {
 	return ""
 }
 
+// Desc returns the untranslated description, the same as Basename.
+func (ev tanakhYomiEvent) Desc() string { return ev.Basename() }
+
 func (ev tanakhYomiEvent) Basename() string {
 	return ev.Render("en")
 }

@@ -59,6 +59,9 @@ func (ev perekYomiEvent) GetEmoji() string {
 	return ""
 }
 
+// Desc returns the untranslated description, the same as Basename.
+func (ev perekYomiEvent) Desc() string { return ev.Basename() }
+
 func (ev perekYomiEvent) Basename() string {
 	return ev.Reading.String()
 }

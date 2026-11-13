@@ -69,6 +69,9 @@ func (ev pirkeiAvotEvent) GetEmoji() string {
 	return ""
 }
 
+// Desc returns the untranslated description, the same as Basename.
+func (ev pirkeiAvotEvent) Desc() string { return ev.Basename() }
+
 func (ev pirkeiAvotEvent) Basename() string {
 	parts := make([]string, len(ev.Chapters))
 	for i, c := range ev.Chapters {

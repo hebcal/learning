@@ -58,6 +58,9 @@ func (ev dafWeeklyEvent) GetEmoji() string {
 	return ""
 }
 
+// Desc returns the untranslated description, the same as Basename.
+func (ev dafWeeklyEvent) Desc() string { return ev.Basename() }
+
 func (ev dafWeeklyEvent) Basename() string {
 	return ev.Daf.String()
 }

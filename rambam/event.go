@@ -81,6 +81,10 @@ func (ev rambam1Event) Render(locale string) string  { return renderReading(ev.R
 func (ev rambam1Event) GetFlags() event.HolidayFlags { return event.DAILY_LEARNING }
 func (ev rambam1Event) GetEmoji() string             { return "" }
 func (ev rambam1Event) Basename() string             { return ev.Reading.String() }
+
+// Desc returns the untranslated description, the same as Basename.
+func (ev rambam1Event) Desc() string { return ev.Basename() }
+
 func (ev rambam1Event) GetCategories() []string {
 	return []string{"rambam1"}
 }
@@ -115,6 +119,9 @@ func (ev rambam3Event) Render(locale string) string {
 	}
 	return strings.Join(parts, ", ")
 }
+
+// Desc returns the untranslated description, the same as Basename.
+func (ev rambam3Event) Desc() string { return ev.Basename() }
 
 func (ev rambam3Event) Basename() string {
 	parts := make([]string, len(ev.Readings))

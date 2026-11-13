@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/hebcal/hdate"
-	"github.com/hebcal/hebcal-go/event"
 	"github.com/hebcal/learning/tanakhyomi"
 	"github.com/stretchr/testify/assert"
 )
@@ -120,7 +119,7 @@ func TestTanakhYomiCrossBook(t *testing.T) {
 		ev := tanakhyomi.NewTanakhYomiEvent(hd, r)
 		assert.Equal(c.en, ev.Render("en"))
 		assert.Equal(c.en, ev.Basename())
-		assert.Equal("https://www.sefaria.org/"+c.link+"?lang=bi", event.URL(ev))
+		assert.Equal("https://www.sefaria.org/"+c.link+"?lang=bi", ev.URL())
 	}
 	hd := hdate.FromGregorian(2027, time.May, 16)
 	r, _ := tanakhyomi.New(hd)
