@@ -10,7 +10,7 @@ import (
 // dailylearning registry: "yerushalmi-vilna" (the classic Vilna Edition,
 // which skips Yom Kippur and Tisha B'Av) and "yerushalmi-schottenstein".
 func init() {
-	dailylearning.AddCalendar("yerushalmi-vilna", func(hd hdate.HDate, il bool) event.CalEvent {
+	dailylearning.AddCalendarFrom("yerushalmi-vilna", func(hd hdate.HDate, il bool) event.CalEvent {
 		if hd.Abs() < VilnaStartRD {
 			return nil
 		}
@@ -22,7 +22,7 @@ func init() {
 		return NewYerushalmiYomiEvent(hd, daf, Vilna)
 	}, hdate.FromRD(VilnaStartRD))
 
-	dailylearning.AddCalendar("yerushalmi-schottenstein", func(hd hdate.HDate, il bool) event.CalEvent {
+	dailylearning.AddCalendarFrom("yerushalmi-schottenstein", func(hd hdate.HDate, il bool) event.CalEvent {
 		if hd.Abs() < SchottensteinStartRD {
 			return nil
 		}

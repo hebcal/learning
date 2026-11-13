@@ -27,17 +27,17 @@ import (
 )
 
 type dafYomiEvent struct {
-	Date hdate.HDate
+	date hdate.HDate
 	Daf  Daf
 }
 
 // NewDafYomiEvent returns a calendar event for the Daf Yomi on the given date.
 func NewDafYomiEvent(hd hdate.HDate, daf Daf) event.CalEvent {
-	return dafYomiEvent{Date: hd, Daf: daf}
+	return dafYomiEvent{date: hd, Daf: daf}
 }
 
-func (ev dafYomiEvent) GetDate() hdate.HDate {
-	return ev.Date
+func (ev dafYomiEvent) Date() hdate.HDate {
+	return ev.date
 }
 
 func (ev dafYomiEvent) Render(locale string) string {
@@ -49,11 +49,11 @@ func (ev dafYomiEvent) Render(locale string) string {
 	return name + " " + strconv.Itoa(ev.Daf.Blatt)
 }
 
-func (ev dafYomiEvent) GetFlags() event.HolidayFlags {
-	return event.DAF_YOMI | event.DAILY_LEARNING
+func (ev dafYomiEvent) Flags() event.Flags {
+	return event.DafYomi | event.DailyLearning
 }
 
-func (ev dafYomiEvent) GetEmoji() string {
+func (ev dafYomiEvent) Emoji() string {
 	return ""
 }
 
@@ -64,7 +64,7 @@ func (ev dafYomiEvent) Basename() string {
 	return ev.Daf.String()
 }
 
-func (ev dafYomiEvent) GetCategories() []string {
+func (ev dafYomiEvent) Categories() []string {
 	return []string{"dafyomi"}
 }
 

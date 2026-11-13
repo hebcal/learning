@@ -27,12 +27,12 @@ func TestRegistry(t *testing.T) {
 	assert := assert.New(t)
 	assert.Equal(
 		[]string{"929", "dafweekly", "dafweeklysunday", "dafyomi", "mishnayomi", "nachyomi", "perekyomi", "pirkeiavotsummer", "psalms", "rambam1", "rambam3", "tanakhyomi", "yerushalmi-schottenstein", "yerushalmi-vilna"},
-		dailylearning.GetCalendars(),
+		dailylearning.Calendars(),
 	)
 
 	ev := dailylearning.Lookup("929", hdate.FromGregorian(2014, time.December, 21), false)
 	assert.Equal("Genesis 1 (1)", ev.Render("en"))
-	assert.Equal(event.DAILY_LEARNING, ev.GetFlags())
+	assert.Equal(event.DailyLearning, ev.Flags())
 
 	ev = dailylearning.Lookup("rambam1", hdate.FromGregorian(1987, time.February, 1), false)
 	assert.Equal("Kings and Wars 4", ev.Render("en"))
@@ -55,7 +55,7 @@ func checkEvents(t *testing.T, locale string, opts *hebcal.CalOptions, want []st
 	assert.NoError(t, err)
 	got := make([]string, 0, len(events))
 	for _, ev := range events {
-		line := fmt.Sprintf("%s %s", hd2iso(ev.GetDate()), ev.Render(locale))
+		line := fmt.Sprintf("%s %s", hd2iso(ev.Date()), ev.Render(locale))
 		got = append(got, line)
 	}
 	assert.Equal(t, want, got)
@@ -111,7 +111,7 @@ func TestHebrewCalendarSchottenstein(t *testing.T) {
 	for _, ev := range events {
 		desc := ev.Render("en")
 		if strings.HasSuffix(desc, " 1") {
-			line := fmt.Sprintf("%s %s", hd2iso(ev.GetDate()), desc)
+			line := fmt.Sprintf("%s %s", hd2iso(ev.Date()), desc)
 			actual = append(actual, line)
 		}
 	}
@@ -197,7 +197,7 @@ func TestNachYomi(t *testing.T) {
 
 	actual := make([]string, 0, len(events))
 	for _, ev := range events {
-		line := fmt.Sprintf("%s,%s", hd2iso(ev.GetDate()), ev.Render("en"))
+		line := fmt.Sprintf("%s,%s", hd2iso(ev.Date()), ev.Render("en"))
 		actual = append(actual, line)
 	}
 
@@ -953,7 +953,7 @@ func TestNachYomi(t *testing.T) {
 // stable identifiers (iCalendar UIDs) from it, so it must not drift.
 func TestDescIsBasename(t *testing.T) {
 	hd := hdate.FromGregorian(2026, time.May, 3) // a Sunday in Pirkei Avot season
-	names := dailylearning.GetCalendars()
+	names := dailylearning.Calendars()
 	assert.NotEmpty(t, names)
 	for _, name := range names {
 		found := false

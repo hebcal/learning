@@ -9,12 +9,13 @@ how `@hebcal/learning` plugs into `@hebcal/core`.
 ## Architecture
 
 - **hebcal-go** owns the generic plumbing and contains **no schedules**:
-  - `dailylearning` — registry: `AddCalendar(name, fn, startDate...)`,
-    `Lookup(name, hd, il) event.CalEvent`, `Has`, `GetCalendars`, `GetStartDate`.
+  - `dailylearning` — registry: `AddCalendar(name, fn)`,
+    `AddCalendarFrom(name, fn, startDate)`,
+    `Lookup(name, hd, il) event.CalEvent`, `Has`, `Calendars`, `StartDate`.
     Names are case-insensitive.
-  - `event` — the `CalEvent` interface (`GetDate`, `Desc`, `Basename`,
-    `Render(locale)`, `GetFlags`, `GetEmoji`, `GetCategories`, `URL`) and the
-    `HolidayFlags` bits, including the generic `DAILY_LEARNING` flag used by
+  - `event` — the `CalEvent` interface (`Date`, `Desc`, `Basename`,
+    `Render(locale)`, `Flags`, `Emoji`, `Categories`, `URL`) and the
+    `event.Flags` bits, including the generic `event.DailyLearning` flag used by
     plugin schedules. `RenderBrief(locale)` and `Memo(locale)` are optional
     (`event.BriefRenderer`, `event.Memoer`): implement them only where
     @hebcal/learning's `renderBrief()` / `memo` differ from `render()`.
@@ -43,7 +44,9 @@ Each sub-package (`dafyomi`, `mishnayomi`, `nachyomi`, `yerushalmi`, `nine29`,
     `Desc()` must never change once released (`TestDescIsBasename`).
   - `URL()` returns the reading's page, usually on sefaria.org, or `""` when
     there is none. It must match the URL @hebcal/learning produces.
-- `register.go` — `func init()` calling `dailylearning.AddCalendar(...)`. The
+- `register.go` — `func init()` calling `dailylearning.AddCalendarFrom(name,
+  fn, startDate)`, or `AddCalendar(name, fn)` for a schedule with no start
+  date. The
   registered name matches the TS calendar name exactly (e.g. `dafYomi`,
   `yerushalmi-vilna`, `929`, `rambam1`, `dafWeekly`). The wrapper returns `nil`
   when there's no reading (before start date, skip day, etc.).
@@ -63,13 +66,15 @@ Each sub-package (`dafyomi`, `mishnayomi`, `nachyomi`, `yerushalmi`, `nine29`,
    `hdate.FromRD(abs).Weekday()` and `hd.Abs()` (int64) are the tools.
 4. Reuse existing data/logic instead of duplicating — e.g. `dafweekly` calls the
    exported `dafyomi.FindDaf(idx)`. Generate big tables from JSON with a script.
-5. Plugin schedules return `event.DAILY_LEARNING` from `GetFlags()`. (The
-   original four keep their dedicated flags: `DAF_YOMI`, etc.) Implement
+5. Plugin schedules return `event.DailyLearning` from `Flags()`. (The
+   original four keep their dedicated flags: `event.DafYomi`, etc.) The
+   struct's date field is unexported (`date`), because the interface method
+   is `Date()`. Implement
    `Desc()` as `return ev.Basename()` and `URL()` from the TS event's `url()`
    (return `""` if it has none) — both are required by `event.CalEvent`, and
    the package will not compile without them.
 6. Add a blank import to `learning.go` and extend the expected list in
-   `TestRegistry` (in `integration_test.go`) — it asserts `GetCalendars()` exactly
+   `TestRegistry` (in `integration_test.go`) — it asserts `Calendars()` exactly
    and that lookups render correctly end-to-end through `HebrewCalendar`.
 7. Update `README.md` (Schedules list + registered names + roadmap).
 
