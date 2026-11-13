@@ -11,23 +11,17 @@ import (
 // which skips Yom Kippur and Tisha B'Av) and "yerushalmi-schottenstein".
 func init() {
 	dailylearning.AddCalendarFrom("yerushalmi-vilna", func(hd hdate.HDate, il bool) event.CalEvent {
-		if hd.Abs() < VilnaStartRD {
-			return nil
-		}
-		daf := New(hd, Vilna)
+		daf, err := New(hd, Vilna)
 		// daf.Blatt is 0 to signal no Yerushalmi Yomi on Yom Kippur and 9 Av.
-		if daf.Blatt == 0 {
+		if err != nil || daf.Blatt == 0 {
 			return nil
 		}
 		return NewYerushalmiYomiEvent(hd, daf, Vilna)
 	}, hdate.FromRD(VilnaStartRD))
 
 	dailylearning.AddCalendarFrom("yerushalmi-schottenstein", func(hd hdate.HDate, il bool) event.CalEvent {
-		if hd.Abs() < SchottensteinStartRD {
-			return nil
-		}
-		daf := New(hd, Schottenstein)
-		if daf.Blatt == 0 {
+		daf, err := New(hd, Schottenstein)
+		if err != nil || daf.Blatt == 0 {
 			return nil
 		}
 		return NewYerushalmiYomiEvent(hd, daf, Schottenstein)

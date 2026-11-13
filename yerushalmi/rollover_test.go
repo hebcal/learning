@@ -26,14 +26,14 @@ func TestVilnaRollover2172(t *testing.T) {
 	assert.Equal(int64(abs), greg.ToRD(2172, 8, 8))
 
 	// A new cycle begins on this day rather than blowing up.
-	assert.Equal(dafyomi.Daf{Name: "Berakhot", Blatt: 1}, New(hd, Vilna))
+	assert.Equal(dafyomi.Daf{Name: "Berakhot", Blatt: 1}, mustNew(hd, Vilna))
 	assert.Equal(int64(abs), cycleStart(Vilna, abs))
 
 	// The preceding day is the last daf of the outgoing cycle.
-	assert.Equal(dafyomi.Daf{Name: "Niddah", Blatt: 13}, New(hdate.FromRD(abs-1), Vilna))
+	assert.Equal(dafyomi.Daf{Name: "Niddah", Blatt: 13}, mustNew(hdate.FromRD(abs-1), Vilna))
 
 	// ...and the days after continue in order.
-	assert.Equal(dafyomi.Daf{Name: "Berakhot", Blatt: 2}, New(hdate.FromRD(abs+1), Vilna))
+	assert.Equal(dafyomi.Daf{Name: "Berakhot", Blatt: 2}, mustNew(hdate.FromRD(abs+1), Vilna))
 }
 
 // TestVilnaRollover2420 covers the second date where the old cycle walk broke
@@ -42,7 +42,7 @@ func TestVilnaRollover2420(t *testing.T) {
 	assert := assert.New(t)
 	const abs = 883792
 	assert.Equal("20 Tishrei 6181", hdate.FromRD(abs).String())
-	assert.NotEqual(0, New(hdate.FromRD(abs), Vilna).Blatt)
+	assert.NotEqual(0, mustNew(hdate.FromRD(abs), Vilna).Blatt)
 }
 
 // TestVilnaEveryCycleBoundaryIsBerakhot1 walks 200 consecutive cycles and
@@ -54,15 +54,15 @@ func TestVilnaEveryCycleBoundaryIsBerakhot1(t *testing.T) {
 	assert.Equal(1554, numDapim)
 	abs := VilnaStartRD
 	for cycle := 0; cycle < 200; cycle++ {
-		assert.Equal(dafyomi.Daf{Name: "Berakhot", Blatt: 1}, New(hdate.FromRD(abs), Vilna))
+		assert.Equal(dafyomi.Daf{Name: "Berakhot", Blatt: 1}, mustNew(hdate.FromRD(abs), Vilna))
 		assert.Equal(abs, cycleStart(Vilna, abs))
 		if cycle > 0 {
 			// find the previous reading day (skipping YK / Tisha B'Av)
 			prev := abs - 1
-			for New(hdate.FromRD(prev), Vilna).Blatt == 0 {
+			for mustNew(hdate.FromRD(prev), Vilna).Blatt == 0 {
 				prev--
 			}
-			assert.Equal(dafyomi.Daf{Name: "Niddah", Blatt: 13}, New(hdate.FromRD(prev), Vilna))
+			assert.Equal(dafyomi.Daf{Name: "Niddah", Blatt: 13}, mustNew(hdate.FromRD(prev), Vilna))
 		}
 		// advance past the end of this cycle
 		next := abs + int64(numDapim)
@@ -87,4 +87,13 @@ func TestNumSpecialDaysBoundaries(t *testing.T) {
 	}
 	// Schottenstein never skips
 	assert.Equal(0, numSpecialDays(Schottenstein, 738473, 803533))
+}
+
+// mustNew is New for a date known to be within the cycle.
+func mustNew(hd hdate.HDate, edition Edition) dafyomi.Daf {
+	daf, err := New(hd, edition)
+	if err != nil {
+		panic(err)
+	}
+	return daf
 }

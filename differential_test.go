@@ -78,8 +78,8 @@ func serialize929(abs int64) string {
 
 func serializeYerushalmi(ed yerushalmi.Edition, name string) func(abs int64) string {
 	return func(abs int64) string {
-		d := yerushalmi.New(hdate.FromRD(abs), ed)
-		if d.Blatt == 0 {
+		d, err := yerushalmi.New(hdate.FromRD(abs), ed)
+		if err != nil || d.Blatt == 0 {
 			return "null"
 		}
 		return name + "|" + d.Name + "|" + strconv.Itoa(d.Blatt)
@@ -190,8 +190,12 @@ func TestFarFutureYearIsComputable(t *testing.T) {
 	if r, ok := nine29.New(hd); ok {
 		assert.Greater(r.CycleChap, 0)
 	}
-	assert.NotEqual(0, yerushalmi.New(hd, yerushalmi.Schottenstein).Blatt)
-	assert.NotEmpty(yerushalmi.New(hd, yerushalmi.Vilna).Name)
+	schott, err := yerushalmi.New(hd, yerushalmi.Schottenstein)
+	assert.NoError(err)
+	assert.NotEqual(0, schott.Blatt)
+	vilna, err := yerushalmi.New(hd, yerushalmi.Vilna)
+	assert.NoError(err)
+	assert.NotEmpty(vilna.Name)
 	if r, ok := tanakhyomi.New(hd); ok {
 		assert.NotEmpty(r.Blatt)
 	}

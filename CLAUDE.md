@@ -83,6 +83,11 @@ Each sub-package (`dafyomi`, `mishnayomi`, `nachyomi`, `yerushalmi`, `nine29`,
 - GPL-2.0-or-later header on each non-generated `.go` file (copy from a sibling).
 - `go 1.18` in `go.mod`. Run `gofmt -l .`, `go vet ./...`, `go test ./...` before
   committing — keep them all clean.
+- A date before a schedule's cycle began is not a panic: the lookup function
+  returns `(value, false)` or an error (`dafyomi.New`, `yerushalmi.New` with
+  `yerushalmi.ErrBeforeCycle`), and the registered calendar returns `nil`.
+  The remaining panics mark table lookups that cannot fail ("internal error:
+  ... index out of range"); keep new ones to that.
 - Hebrew section/book names already exist in hebcal-go `locales` (Tanakh books,
   Mishneh Torah sections). `LookupTranslation` returns the key unchanged for
   `en`/`sephardic`/`""`, and `(\"\", false)` for a missing key in other locales —
