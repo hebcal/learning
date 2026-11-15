@@ -84,6 +84,10 @@ func (ev pirkeiAvotEvent) Categories() []string {
 	return []string{"pirkeiAvotSummer"}
 }
 
+// CategoryName is the series' display name, "Pirkei Avot", for the
+// CATEGORIES and LOCATION of a calendar feed's event.
+func (ev pirkeiAvotEvent) CategoryName() string { return "Pirkei Avot" }
+
 // URL returns a link to sefaria.org for the chapter(s).
 func (ev pirkeiAvotEvent) URL() string {
 	parts := make([]string, len(ev.Chapters))

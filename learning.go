@@ -28,3 +28,13 @@ import (
 	_ "github.com/hebcal/learning/tanakhyomi"
 	_ "github.com/hebcal/learning/yerushalmi"
 )
+
+// CategoryNamer is implemented by every schedule's events. CategoryName
+// returns the series' display name ("Daf Yomi", "Daily Rambam", "Psalms"),
+// which calendar feeds use as an event's CATEGORIES and, translated, its
+// LOCATION. It is not the same as the first of Categories(), which is an
+// identifier ("dafyomi", "dailyRambam1", "dailyPsalms"), and both editions
+// of Yerushalmi Yomi, like both Rambam schedules, share one name.
+type CategoryNamer interface {
+	CategoryName() string
+}

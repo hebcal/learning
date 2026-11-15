@@ -17,7 +17,7 @@ import (
 	"github.com/hebcal/hebcal-go/hebcal"
 	"github.com/stretchr/testify/assert"
 
-	_ "github.com/hebcal/learning"
+	"github.com/hebcal/learning"
 )
 
 // TestRegistry verifies that importing the learning package registers
@@ -1003,5 +1003,48 @@ func TestCategories(t *testing.T) {
 			continue
 		}
 		assert.Equal(t, c.want, ev.Categories(), c.name)
+	}
+}
+
+// TestCategoryNames pins each schedule's CategoryName() to the matching
+// @hebcal/learning event's `category` getter, which @hebcal/icalendar writes
+// as CATEGORIES and, translated, as LOCATION.
+func TestCategoryNames(t *testing.T) {
+	cases := []struct {
+		name string
+		hd   hdate.HDate
+		want string
+	}{
+		{"929", hdate.FromGregorian(2014, time.December, 21), "929"},
+		{"dafYomi", hdate.FromGregorian(2024, time.January, 1), "Daf Yomi"},
+		{"mishnaYomi", hdate.FromGregorian(2024, time.January, 1), "Mishna Yomi"},
+		{"nachYomi", hdate.FromGregorian(2024, time.January, 1), "Nach Yomi"},
+		{"perekYomi", hdate.FromGregorian(2024, time.January, 1), "Perek Yomi"},
+		{"psalms", hdate.FromGregorian(2024, time.January, 1), "Psalms"},
+		{"rambam1", hdate.FromGregorian(2024, time.January, 1), "Daily Rambam"},
+		{"rambam3", hdate.FromGregorian(2024, time.January, 1), "Daily Rambam"},
+		{"tanakhYomi", hdate.FromGregorian(2024, time.January, 1), "Tanakh Yomi"},
+		{"yerushalmi-vilna", hdate.FromGregorian(2024, time.January, 1), "Yerushalmi Yomi"},
+		{"yerushalmi-schottenstein", hdate.FromGregorian(2024, time.January, 1), "Yerushalmi Yomi"},
+		{"dafWeekly", hdate.FromGregorian(2024, time.January, 1), "Daf Weekly"},
+		{"dafWeeklySunday", hdate.FromGregorian(2024, time.January, 7), "Daf Weekly"},
+		{"pirkeiAvotSummer", hdate.FromGregorian(2024, time.May, 4), "Pirkei Avot"},
+	}
+	tested := map[string]bool{}
+	for _, c := range cases {
+		tested[strings.ToLower(c.name)] = true
+		ev := dailylearning.Lookup(c.name, c.hd, false)
+		if !assert.NotNil(t, ev, c.name) {
+			continue
+		}
+		cn, ok := ev.(learning.CategoryNamer)
+		if !assert.True(t, ok, "%s: %T does not implement learning.CategoryNamer", c.name, ev) {
+			continue
+		}
+		assert.Equal(t, c.want, cn.CategoryName(), c.name)
+	}
+	// A schedule added later must be added here too.
+	for _, name := range dailylearning.Calendars() {
+		assert.True(t, tested[name], "schedule %q has no CategoryName case", name)
 	}
 }

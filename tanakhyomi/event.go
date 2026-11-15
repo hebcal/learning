@@ -183,6 +183,10 @@ func (ev tanakhYomiEvent) Categories() []string {
 	return []string{"tanakhYomi"}
 }
 
+// CategoryName is the series' display name, "Tanakh Yomi", for the
+// CATEGORIES and LOCATION of a calendar feed's event.
+func (ev tanakhYomiEvent) CategoryName() string { return "Tanakh Yomi" }
+
 // lastVerse is the final verse of each book in which a seder starts but
 // does not end. Sefaria cannot link a range that spans two books, so the
 // link for such a seder covers its part in the first book.

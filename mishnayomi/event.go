@@ -77,6 +77,10 @@ func (ev mishnaYomiEvent) Categories() []string {
 	return []string{"mishnayomi"}
 }
 
+// CategoryName is the series' display name, "Mishna Yomi", for the
+// CATEGORIES and LOCATION of a calendar feed's event.
+func (ev mishnaYomiEvent) CategoryName() string { return "Mishna Yomi" }
+
 // URL returns a link to sefaria.org for the pair of mishnayot, e.g.
 // https://www.sefaria.org/Mishnah_Berakhot.3.6-4.1?lang=bi . When the two
 // mishnayot span different tractates only the first is linked.

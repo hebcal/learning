@@ -70,6 +70,10 @@ func (ev perekYomiEvent) Categories() []string {
 	return []string{"perekYomi"}
 }
 
+// CategoryName is the series' display name, "Perek Yomi", for the
+// CATEGORIES and LOCATION of a calendar feed's event.
+func (ev perekYomiEvent) CategoryName() string { return "Perek Yomi" }
+
 // URL returns a link to sefaria.org for the Mishna chapter.
 func (ev perekYomiEvent) URL() string {
 	prefix := "Mishnah"

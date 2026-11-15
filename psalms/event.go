@@ -74,6 +74,10 @@ func (ev psalmsEvent) Categories() []string {
 	return []string{"dailyPsalms"}
 }
 
+// CategoryName is the series' display name, "Psalms", for the
+// CATEGORIES and LOCATION of a calendar feed's event.
+func (ev psalmsEvent) CategoryName() string { return "Psalms" }
+
 // URL returns a link to sefaria.org for the Psalms portion, e.g.
 // https://www.sefaria.org/Psalms.10-17?lang=bi .
 func (ev psalmsEvent) URL() string {

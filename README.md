@@ -72,6 +72,20 @@ daf, _ := dafyomi.New(hdate.FromGregorian(1995, time.December, 17))
 fmt.Println(daf) // Avodah Zarah 68
 ```
 
+## Category names
+
+Every learning event also implements `learning.CategoryNamer`, whose
+`CategoryName()` is the series' display name, as @hebcal/learning's
+`category` getter has it. Calendar feeds use it as an event's `CATEGORIES`
+and, translated, its `LOCATION`. It differs from `Categories()[0]`, an
+identifier:
+
+```go
+ev := dailylearning.Lookup("rambam1", hdate.FromGregorian(2024, time.January, 1), false)
+fmt.Println(ev.Categories())                              // [dailyRambam1]
+fmt.Println(ev.(learning.CategoryNamer).CategoryName()) // Daily Rambam
+```
+
 ## Event URLs
 
 Every learning event implements `URL()`, part of the `event.CalEvent`

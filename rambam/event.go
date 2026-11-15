@@ -91,6 +91,10 @@ func (ev rambam1Event) Categories() []string {
 	return []string{"dailyRambam1"}
 }
 
+// CategoryName is the series' display name, "Daily Rambam", for the
+// CATEGORIES and LOCATION of a calendar feed's event.
+func (ev rambam1Event) CategoryName() string { return "Daily Rambam" }
+
 // URL returns a link to sefaria.org for the chapter.
 func (ev rambam1Event) URL() string {
 	return readingURL(ev.Reading)
@@ -138,6 +142,10 @@ func (ev rambam3Event) Basename() string {
 func (ev rambam3Event) Categories() []string {
 	return []string{"dailyRambam3"}
 }
+
+// CategoryName is the series' display name, "Daily Rambam", for the
+// CATEGORIES and LOCATION of a calendar feed's event.
+func (ev rambam3Event) CategoryName() string { return "Daily Rambam" }
 
 // Memo lists each reading with its sefaria.org link, a blank line between
 // them, when the day's three chapters do not collapse to a single reading:

@@ -71,6 +71,10 @@ func (ev nachYomiEvent) Categories() []string {
 	return []string{"nachyomi"}
 }
 
+// CategoryName is the series' display name, "Nach Yomi", for the
+// CATEGORIES and LOCATION of a calendar feed's event.
+func (ev nachYomiEvent) CategoryName() string { return "Nach Yomi" }
+
 // URL returns a link to sefaria.org for the chapter.
 func (ev nachYomiEvent) URL() string {
 	return sefaria.URL(ev.Chapter.Name, strconv.Itoa(ev.Chapter.Blatt))

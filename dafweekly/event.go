@@ -69,6 +69,10 @@ func (ev dafWeeklyEvent) Categories() []string {
 	return []string{"dafWeekly"}
 }
 
+// CategoryName is the series' display name, "Daf Weekly", for the
+// CATEGORIES and LOCATION of a calendar feed's event.
+func (ev dafWeeklyEvent) CategoryName() string { return "Daf Weekly" }
+
 // URL returns a link to sefaria.org (or dafyomi.org) for the daf.
 func (ev dafWeeklyEvent) URL() string {
 	return dafyomi.URL(ev.Daf)

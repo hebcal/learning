@@ -83,6 +83,10 @@ func (ev yyomiEvent) Categories() []string {
 	return []string{"yerushalmi", ev.Edition.String()}
 }
 
+// CategoryName is the series' display name, "Yerushalmi Yomi", for the
+// CATEGORIES and LOCATION of a calendar feed's event.
+func (ev yyomiEvent) CategoryName() string { return "Yerushalmi Yomi" }
+
 // URL returns a link to sefaria.org for the daf, e.g.
 // https://www.sefaria.org/Jerusalem_Talmud_Berakhot.1.5.9-14?lang=bi . Only
 // the Vilna edition is mapped to Sefaria references; the Schottenstein

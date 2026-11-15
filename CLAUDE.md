@@ -44,6 +44,15 @@ Each sub-package (`dafyomi`, `mishnayomi`, `nachyomi`, `yerushalmi`, `nine29`,
     `Desc()` must never change once released (`TestDescIsBasename`).
   - `URL()` returns the reading's page, usually on sefaria.org, or `""` when
     there is none. It must match the URL @hebcal/learning produces.
+  - `Categories()` returns the TS event's `getCategories()` verbatim
+    (`dailyRambam1`, `["yerushalmi", "vilna"]`): hebcal-web's
+    `dailyLearningConfig.json` keys each series by it, and hebcal-api-go
+    reads that file (`TestCategories`).
+  - `CategoryName()` (the `learning.CategoryNamer` interface) returns the
+    TS event's `category` getter ("Daily Rambam", "Psalms"), which calendar
+    feeds write as `CATEGORIES` and, translated, as `LOCATION`
+    (`TestCategoryNames`). It is not part of `event.CalEvent`, so nothing
+    fails to compile without it; the test fails instead.
 - `register.go` — `func init()` calling `dailylearning.AddCalendarFrom(name,
   fn, startDate)`, or `AddCalendar(name, fn)` for a schedule with no start
   date. The
@@ -76,6 +85,8 @@ Each sub-package (`dafyomi`, `mishnayomi`, `nachyomi`, `yerushalmi`, `nine29`,
 6. Add a blank import to `learning.go` and extend the expected list in
    `TestRegistry` (in `integration_test.go`) — it asserts `Calendars()` exactly
    and that lookups render correctly end-to-end through `HebrewCalendar`.
+   Add cases to `TestCategories` and `TestCategoryNames` too; the latter
+   fails for any registered schedule it has no case for.
 7. Update `README.md` (Schedules list + registered names + roadmap).
 
 ## Conventions

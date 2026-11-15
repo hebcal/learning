@@ -68,6 +68,10 @@ func (ev dafYomiEvent) Categories() []string {
 	return []string{"dafyomi"}
 }
 
+// CategoryName is the series' display name, "Daf Yomi", for the
+// CATEGORIES and LOCATION of a calendar feed's event.
+func (ev dafYomiEvent) CategoryName() string { return "Daf Yomi" }
+
 // URL returns a link to sefaria.org (or dafyomi.org) for the daf.
 func (ev dafYomiEvent) URL() string {
 	return URL(ev.Daf)

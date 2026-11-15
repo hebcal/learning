@@ -78,6 +78,10 @@ func (ev nine29Event) Categories() []string {
 	return []string{"929"}
 }
 
+// CategoryName is the series' display name, "929", for the
+// CATEGORIES and LOCATION of a calendar feed's event.
+func (ev nine29Event) CategoryName() string { return "929" }
+
 // URL returns a link to sefaria.org for the current chapter, e.g.
 // https://www.sefaria.org/Deuteronomy.34?lang=bi .
 func (ev nine29Event) URL() string {
