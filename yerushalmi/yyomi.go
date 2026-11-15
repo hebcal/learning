@@ -28,6 +28,18 @@ const (
 	Schottenstein
 )
 
+// String returns the edition's lowercase name, "vilna" or "schottenstein",
+// as @hebcal/learning spells it in an event's categories.
+func (e Edition) String() string {
+	switch e {
+	case Vilna:
+		return "vilna"
+	case Schottenstein:
+		return "schottenstein"
+	}
+	return ""
+}
+
 // Vilna Edition
 var vilnaShas = []dafyomi.Daf{
 	{Name: "Berakhot", Blatt: 68},

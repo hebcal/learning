@@ -971,3 +971,37 @@ func TestDescIsBasename(t *testing.T) {
 		assert.True(t, found, "no %s event in the week of %s", name, hd)
 	}
 }
+
+// TestCategories pins each schedule's Categories() to what the matching
+// @hebcal/learning event returns from getCategories(). Consumers (hebcal-web's
+// dailyLearningConfig.json, read by hebcal-api-go) key a series by its first
+// category, joined with the second for Yerushalmi, so the two libraries must
+// agree.
+func TestCategories(t *testing.T) {
+	cases := []struct {
+		name string
+		hd   hdate.HDate
+		want []string
+	}{
+		{"929", hdate.FromGregorian(2014, time.December, 21), []string{"929"}},
+		{"dafYomi", hdate.FromGregorian(2024, time.January, 1), []string{"dafyomi"}},
+		{"mishnaYomi", hdate.FromGregorian(2024, time.January, 1), []string{"mishnayomi"}},
+		{"nachYomi", hdate.FromGregorian(2024, time.January, 1), []string{"nachyomi"}},
+		{"perekYomi", hdate.FromGregorian(2024, time.January, 1), []string{"perekYomi"}},
+		{"psalms", hdate.FromGregorian(2024, time.January, 1), []string{"dailyPsalms"}},
+		{"rambam1", hdate.FromGregorian(2024, time.January, 1), []string{"dailyRambam1"}},
+		{"rambam3", hdate.FromGregorian(2024, time.January, 1), []string{"dailyRambam3"}},
+		{"tanakhYomi", hdate.FromGregorian(2024, time.January, 1), []string{"tanakhYomi"}},
+		{"yerushalmi-vilna", hdate.FromGregorian(2024, time.January, 1), []string{"yerushalmi", "vilna"}},
+		{"yerushalmi-schottenstein", hdate.FromGregorian(2024, time.January, 1), []string{"yerushalmi", "schottenstein"}},
+		{"dafWeeklySunday", hdate.FromGregorian(2024, time.January, 7), []string{"dafWeekly"}},
+		{"pirkeiAvotSummer", hdate.FromGregorian(2024, time.May, 4), []string{"pirkeiAvotSummer"}},
+	}
+	for _, c := range cases {
+		ev := dailylearning.Lookup(c.name, c.hd, false)
+		if !assert.NotNil(t, ev, c.name) {
+			continue
+		}
+		assert.Equal(t, c.want, ev.Categories(), c.name)
+	}
+}
