@@ -85,8 +85,10 @@ func (ev rambam1Event) Basename() string            { return ev.Reading.String()
 // Desc returns the untranslated description, the same as Basename.
 func (ev rambam1Event) Desc() string { return ev.Basename() }
 
+// Categories names the series as @hebcal/learning's DailyRambamEvent does.
+// The registered calendar name is "rambam1"; the category is not.
 func (ev rambam1Event) Categories() []string {
-	return []string{"rambam1"}
+	return []string{"dailyRambam1"}
 }
 
 // URL returns a link to sefaria.org for the chapter.
@@ -131,8 +133,10 @@ func (ev rambam3Event) Basename() string {
 	return strings.Join(parts, ", ")
 }
 
+// Categories names the series as @hebcal/learning's DailyRambam3Event does.
+// The registered calendar name is "rambam3"; the category is not.
 func (ev rambam3Event) Categories() []string {
-	return []string{"rambam3"}
+	return []string{"dailyRambam3"}
 }
 
 // Memo lists each reading with its sefaria.org link, a blank line between

@@ -76,8 +76,11 @@ func (ev yyomiEvent) Basename() string {
 	return ev.Daf.String()
 }
 
+// Categories is "yerushalmi" followed by the edition ("vilna" or
+// "schottenstein"), as @hebcal/learning's YerushalmiYomiEvent has it, so the
+// two editions can be told apart by category.
 func (ev yyomiEvent) Categories() []string {
-	return []string{"yerushalmi"}
+	return []string{"yerushalmi", ev.Edition.String()}
 }
 
 // URL returns a link to sefaria.org for the daf, e.g.
